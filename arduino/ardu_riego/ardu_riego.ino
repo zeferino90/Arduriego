@@ -9,20 +9,20 @@ const int humitat3 = A3;
 //pin del sensor nivell
 const int nivell = A1;
 //pins electrovalvulas
-const int elect1 =;
-const int elect2 =;
-const int elect3 =;
-const int elect4_5 =; //este controla las dos electrovalvulas de aguacorriente/deposito
+const int valv1 =;
+const int valv2 =;
+const int valv3 =;
+const int valv4_5 =; //este controla las dos electrovalvulas de aguacorriente/deposito
 boolean nivellPreparat = true;
 const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 long tempsUs;
 
 void setup(){
   Serial.begin(9600);
-  pinMode(elect1, OUTPUT);
-  pinMode(elect2, OUTPUT);
-  pinMode(elect3, OUTPUT);
-  pinMode(elect4_5, OUTPUT);
+  pinMode(valv1, OUTPUT);
+  pinMode(valv2, OUTPUT);
+  pinMode(valv3, OUTPUT);
+  pinMode(valv4_5, OUTPUT);
   Timer1.initialize(tempsnopreparat);//se supone 5 minutos
   Timer1.attachInterrupt(activarNivell);
 }
@@ -51,19 +51,19 @@ int sensorHumitat(char h){
 
 int obrirElectrovalvula(char e){
   if(e = '1') {
-    digitalWrite(elect1, HIGH);
+    digitalWrite(valv1, HIGH);
     return 0;
   }
   else if(e = '2'){
-    digitalWrite(elect2, HIGH);
+    digitalWrite(valv2, HIGH);
     return 0;
   }
   else if(e = '3'){
-    digitalWrite(elect3, HIGH);
+    digitalWrite(valv3, HIGH);
     return 0;
   }
   else if(e = '4'){
-    digitalWrite(elect4_5, HIGH);
+    digitalWrite(valv4_5, HIGH);
     return 0;
   }
   else return -1;
@@ -71,19 +71,19 @@ int obrirElectrovalvula(char e){
 
 int tancarElectrovalvula(char e){
   if(e = '1') {
-    digitalWrite(elect1, LOW);
+    digitalWrite(valv1, LOW);
     return 0;
   }
   else if(e = '2'){
-    digitalWrite(elect2, LOW);
+    digitalWrite(valv2, LOW);
     return 0;
   }
   else if(e = '3'){
-    digitalWrite(elect3, LOW);
+    digitalWrite(valv3, LOW);
     return 0;
   }
   else if(e = '4'){
-    digitalWrite(elect4_5, LOW);
+    digitalWrite(valv4_5, LOW);
     return 0;
   }
   else return -1;
@@ -91,16 +91,16 @@ int tancarElectrovalvula(char e){
 
 int consultarElectrovalvula(char e){
   if(e = '1') {
-    return digitalRead(elect1);
+    return digitalRead(valv1);
   }
   else if(e = '2'){
-    return digitalRead(elect2);
+    return digitalRead(valv2);
   }
   else if(e = '3'){
-    return digitalRead(elect3);
+    return digitalRead(valv3);
   }
   else if(e = '4'){
-    return digitalRead(elect4_5);
+    return digitalRead(valv4_5);
   }
   else return -1;
 }
