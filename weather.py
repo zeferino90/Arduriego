@@ -40,12 +40,13 @@ def gps():
 def weather_coord(coords):
     urlweather = "http://api.openweathermap.org/data/2.5/weather"
     r = requests.get(urlweather, params=coords)
-    print r.json()
+    print(r.json())
+
 
 def forecast_coord(coords):
     urlforecast = "http://api.openweathermap.org/data/2.5/forecast"
     r = requests.get(urlforecast, params=coords)
-    print r.json()
+    print(r.json())
 
 
 datos_gps = gps()
