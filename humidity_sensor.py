@@ -11,4 +11,7 @@ class humidity_sensor:
             return -1
         else:
             self.arduino.write("H".join(addr))
-            self
+            s = self.arduino.readline()
+            if s !="Recibido\n" :
+                return -1
+            else:
