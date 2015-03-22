@@ -9,16 +9,18 @@ const int humitat3 = A3;
 //pin del sensor nivell
 const int nivell = A1;
 //pins electrovalvulas
-const int valv1 =;
-const int valv2 =;
-const int valv3 =;
-const int valv4_5 =; //este controla las dos electrovalvulas de aguacorriente/deposito
-boolean nivellPreparat = true;
+const int valv1 =2;
+const int valv2 =3;
+const int valv3 =4;
+const int valv4_5 =5; //este controla las dos electrovalvulas de aguacorriente/deposito
+boolean levelReady = true;
 const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 long tempsUs;
+char* c;
 
 void setup(){
   Serial.begin(9600);
+  Serial.setTimeout(1000);//Timeout esperando en lecturas 1000 milis
   pinMode(valv1, OUTPUT);
   pinMode(valv2, OUTPUT);
   pinMode(valv3, OUTPUT);
@@ -28,7 +30,7 @@ void setup(){
 }
 
 void activarNivell(){
-  nivellPreparat = true;
+  levelReady = true;
 }
 
 float temperatura(){
@@ -106,34 +108,37 @@ int consultarElectrovalvula(char e){
 }
 
 void loop(){
-  if(nivellPreparat) noInterrupts(); 
+  if(levelReady) noInterrupts(); 
   if (Serial.available()) { //Si está disponible
-      String c = Serial.read(); //guardo la comanda
-      if (c[0] == "T") { //Si es una 'T', enviar temperatura
-        Serial.print("Recibido");
+      Serial.readBytes(c, 2); //guardo la comanda, en general son 2 caracters per aixo llegeixo dos, si es una comanda d'un sol caracter saltara el timeout i nomes llegira un
+      if (*c == 'T') { //Si es una 'T', enviar temperatura
+        Serial.print("Recibido\n");
         Serial.print(temperatura());
-      } else if (c[0] == "G") { //Si es una 'G', enviar dades gps
-        Serial.print("Recibido");
+      } else if (*c == 'G') { //Si es una 'G', enviar dades gps
+        Serial.print("Recibido\n");
         //falta gps
       }
-      } else if (c[0] == "N") { //Si es una 'N', enviar dades sensor nivell
-        Serial.print("Recibido");
-        if(!nivellPreparat) Serial.println("No disponible");
-        else{
-          Serial.print(sensorNivell());
-          nivellPreparat = false;
-          interrupts();
-        }
-      }
-      } else if (c[0] == "H") { //Si es una 'H', enviar dades sensor humitat
-        Serial.print("Recibido");
-        Serial.print(sensorHumitat(c[1]));
-      }
-      } else if (c[0] == "E") { //Si es una 'E', obrir o tancar una electrovalvula
-        Serial.print("Recibido");
-        if (c[1] = 'O') Serial.print(obrirElectrovalvula(c[2]));
-        else if(c[1] = 'T') Serial.print(tancarElectrovalvula(c[2]));
-        else if(c[1] = 'C') Serial.print(consultarElectrovalvula(c[2]));
-      }
-   }
+    
+     else if (*c == 'N') { //Si es una 'N', enviar dades sensor nivell
+       Serial.print("Recibido\n");
+       if(!levelReady) Serial.println("No disponible\n");
+       else{
+         Serial.print(sensorNivell());
+         levelReady = false;
+         interrupts();
+       }
+     }
+     else if (*c == 'H') { //Si es una 'H', enviar dades sensor humitat
+       Serial.print("Recibido\n");
+       c++;
+       Serial.print(sensorHumitat(*c));
+     }
+     else if (*c == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
+       Serial.print("Recibido\n");
+       c++;
+       if (*c = 'O') Serial.print(obrirElectrovalvula(c[2]));
+       else if(*c = 'C') Serial.print(tancarElectrovalvula(c[2]));
+       else if(*c = 'G') Serial.print(consultarElectrovalvula(c[2]));
+     }
+  }
 }

@@ -4,7 +4,7 @@ __author__ = 'zeferino'
 class humidity_sensor:
     def __init__(self):
         self.value = 0
-        self.arduino = serial.Serial('/dev/ttyACM0', 9600)
+        self.arduino = serial.Serial('/dev/ttyACM0', 9600, timeout= .5)
 
     def getvalue(self, addr):
         if addr < 1 and addr > 3:
