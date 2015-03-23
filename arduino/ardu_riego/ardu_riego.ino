@@ -1,4 +1,5 @@
 #include <TimerOne.h>
+#include <Adafruit_GPS.h>
 
 //Pin del sensor de temperatura
 const int temp = A5;
@@ -17,9 +18,10 @@ boolean levelReady = true;
 const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 long tempsUs;
 char* c;
+Adafruit_GPS GPS(&Serial);
 
 void setup(){
-  Serial.begin(9600);
+  Serial.begin(115200);
   Serial.setTimeout(1000);//Timeout esperando en lecturas 1000 milis
   pinMode(valv1, OUTPUT);
   pinMode(valv2, OUTPUT);
@@ -27,6 +29,8 @@ void setup(){
   pinMode(valv4_5, OUTPUT);
   Timer1.initialize(tempsnopreparat);//se supone 5 minutos
   Timer1.attachInterrupt(activarNivell);
+  GPS.begin(9600);
+  
 }
 
 void activarNivell(){
