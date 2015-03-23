@@ -1,5 +1,8 @@
 #include <TimerOne.h>
 #include <Adafruit_GPS.h>
+#include <SoftwareSerial.h>
+
+SoftwareSerial mySerial(3, 2);
 
 //Pin del sensor de temperatura
 const int temp = A5;
@@ -18,7 +21,8 @@ boolean levelReady = true;
 const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 long tempsUs;
 char* c;
-Adafruit_GPS GPS(&Serial);
+boolean usingInterrupt = false;
+Adafruit_GPS GPS(&mySerial);
 
 void setup(){
   Serial.begin(115200);
@@ -30,8 +34,66 @@ void setup(){
   Timer1.initialize(tempsnopreparat);//se supone 5 minutos
   Timer1.attachInterrupt(activarNivell);
   GPS.begin(9600);
-  
+  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //turn on RMC (recommended minimum) and GGA (fix data) including altitude
+  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+  GPS.sendCommand(PGCMD_ANTENNA);
+  useInterrupt(true);
 }
+
+SIGNAL(TIMER0_COMPA_vect) {
+  char c = GPS.read();
+  // if you want to debug, this is a good time to do it!
+/*#ifdef UDR0
+  if (GPSECHO)
+    if (c) UDR0 = c;  
+    // writing direct to UDR0 is much much faster than Serial.print 
+    // but only one character can be written at a time. 
+#endif*/
+}
+
+void useInterrupt(boolean v) {
+  if (v) {
+    // Timer0 is already used for millis() - we'll just interrupt somewhere
+    // in the middle and call the "Compare A" function above
+    OCR0A = 0xAF;
+    TIMSK0 |= _BV(OCIE0A);
+    usingInterrupt = true;
+  } else {
+    // do not call the interrupt function COMPA anymore
+    TIMSK0 &= ~_BV(OCIE0A);
+    usingInterrupt = false;
+  }
+}
+
+void stateGPS(){
+  Serial.print("\nTime: ");
+  Serial.print(GPS.hour, DEC); Serial.print(':');
+  Serial.print(GPS.minute, DEC); Serial.print(':');
+  Serial.print(GPS.seconds, DEC); Serial.print('.');
+  Serial.println(GPS.milliseconds);
+  Serial.print("Date: ");
+  Serial.print(GPS.day, DEC); Serial.print('/');
+  Serial.print(GPS.month, DEC); Serial.print("/20");
+  Serial.println(GPS.year, DEC);
+  Serial.print("Fix: "); Serial.print((int)GPS.fix);
+  Serial.print(" quality: "); Serial.println((int)GPS.fixquality); 
+  if (GPS.fix) {
+    Serial.print("Location: ");
+    Serial.print(GPS.latitude, 4); Serial.print(GPS.lat);
+    Serial.print(", "); 
+    Serial.print(GPS.longitude, 4); Serial.println(GPS.lon);
+    Serial.print("Location (in degrees, works with Google Maps): ");
+    Serial.print(GPS.latitudeDegrees, 4);
+    Serial.print(", "); 
+    Serial.println(GPS.longitudeDegrees, 4);
+      
+    Serial.print("Speed (knots): "); Serial.println(GPS.speed);
+    Serial.print("Angle: "); Serial.println(GPS.angle);
+    Serial.print("Altitude: "); Serial.println(GPS.altitude);
+    Serial.print("Satellites: "); Serial.println((int)GPS.satellites);
+  }
+}
+
 
 void activarNivell(){
   levelReady = true;
