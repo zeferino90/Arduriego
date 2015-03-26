@@ -182,7 +182,13 @@ void loop(){
         Serial.print(temperatura());
       } else if (*c == 'G') { //Si es una 'G', enviar dades gps
         Serial.print("Recibido\n");
-        //falta gps
+        if(GPS.fix){
+          //seguir esto
+          //Serial.print();
+        }
+        else{
+          Serial.print("No fix\n");
+        }
       }
     
      else if (*c == 'N') { //Si es una 'N', enviar dades sensor nivell
@@ -197,7 +203,7 @@ void loop(){
      else if (*c == 'H') { //Si es una 'H', enviar dades sensor humitat
        Serial.print("Recibido\n");
        c++;
-       Serial.print(sensorHumitat(*c));
+       Serial.print(sensorHumitat(*c) + "\n");
      }
      else if (*c == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
        Serial.print("Recibido\n");
