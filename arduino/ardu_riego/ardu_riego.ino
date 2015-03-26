@@ -179,7 +179,7 @@ void loop(){
       Serial.readBytes(c, 2); //guardo la comanda, en general son 2 caracters per aixo llegeixo dos, si es una comanda d'un sol caracter saltara el timeout i nomes llegira un
       if (*c == 'T') { //Si es una 'T', enviar temperatura
         Serial.print("Recibido\n");
-        Serial.print(temperatura());
+        Serial.print(temperatura() + "\n");
       } else if (*c == 'G') { //Si es una 'G', enviar dades gps
         Serial.print("Recibido\n");
         if(GPS.fix){
