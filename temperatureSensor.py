@@ -18,3 +18,7 @@ class temperatureSensor:
             self.value=float(sresult)
         return (self.value, self.quality)
 
+    def test(self):
+        return 1
+
+
