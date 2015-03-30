@@ -11,7 +11,7 @@ class humiditySensor:
         if addr < 1 and addr > 3:
             self.quality = self.quality if self.quality != 1 else 0
         else:
-            self.arduino.write("H".join(addr))
+            self.arduino.write("H"+ str(addr))
             s = self.arduino.readline()
             if s !="Recibido\n":
                 self.quality = self.quality if self.quality != 1 else 0
@@ -20,4 +20,4 @@ class humiditySensor:
                 sresult = s[0: len(s) - 1]
                 self.value = int(sresult)
         return self.value, self.quality
-    '''falta saber si la conversion de sresult es correcta, falta descubrir que devuelve el sensor i que ranog de valores devuelve'''
+    '''falta saber si la conversion de sresult es correcta, falta descubrir que devuelve el sensor i que rango de valores devuelve'''
