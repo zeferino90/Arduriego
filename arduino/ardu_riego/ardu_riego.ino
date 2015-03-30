@@ -195,7 +195,7 @@ void loop(){
        Serial.print("Recibido\n");
        if(!levelReady) Serial.println("No disponible\n");
        else{
-         Serial.print(sensorNivell());
+         Serial.print(sensorNivell() + "\n");
          levelReady = false;
          interrupts();
        }
@@ -208,9 +208,9 @@ void loop(){
      else if (*c == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
        Serial.print("Recibido\n");
        c++;
-       if (*c = 'O') Serial.print(obrirElectrovalvula(c[2]));
-       else if(*c = 'C') Serial.print(tancarElectrovalvula(c[2]));
-       else if(*c = 'G') Serial.print(consultarElectrovalvula(c[2]));
+       if (*c = 'O') Serial.print(obrirElectrovalvula(*(c+1))+ "\n");
+       else if(*c = 'C') Serial.print(tancarElectrovalvula(*(c+1))+ "\n");
+       else if(*c = 'G') Serial.print(consultarElectrovalvula(*(c+1))+ "\n");
      }
   }
 }
