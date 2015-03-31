@@ -182,12 +182,19 @@ void loop(){
         Serial.print(temperatura() + "\n");
       } else if (*c == 'G') { //Si es una 'G', enviar dades gps
         Serial.print("Recibido\n");
-        if(GPS.fix){
-          //seguir esto
-          //Serial.print();
+        c++;
+        if(*c == 'F'){
+          if(GPS.fix) Serial.print("True" + "\n");
+          else Serial.print("False" + "\n");
         }
-        else{
-          Serial.print("No fix\n");
+        if(*c = 'C'){  
+          if(GPS.fix){
+            Serial.print(GPS.latitude + " ");
+            Serial.print(GPS.longitude + "\n");          
+          }
+          else{
+            Serial.print("No fix\n");
+          }
         }
       }
     
