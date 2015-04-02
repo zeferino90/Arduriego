@@ -20,24 +20,24 @@ const int valv4_5 =5; //este controla las dos electrovalvulas de aguacorriente/d
 boolean levelReady = true;
 const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 long tempsUs;
-char* c;
+int c;
 boolean usingInterrupt = false;
 Adafruit_GPS GPS(&mySerial);
 
 void setup(){
   Serial.begin(115200);
   Serial.setTimeout(1000);//Timeout esperando en lecturas 1000 milis
-  pinMode(valv1, OUTPUT);
-  pinMode(valv2, OUTPUT);
-  pinMode(valv3, OUTPUT);
-  pinMode(valv4_5, OUTPUT);
-  Timer1.initialize(tempsnopreparat);//se supone 5 minutos
-  Timer1.attachInterrupt(activarNivell);
-  GPS.begin(9600);
-  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //turn on RMC (recommended minimum) and GGA (fix data) including altitude
-  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
-  GPS.sendCommand(PGCMD_ANTENNA);
-  useInterrupt(true);
+//  pinMode(valv1, OUTPUT);
+//  pinMode(valv2, OUTPUT);
+//  pinMode(valv3, OUTPUT);
+//  pinMode(valv4_5, OUTPUT);
+//  Timer1.initialize(tempsnopreparat);//se supone 5 minutos
+//  Timer1.attachInterrupt(activarNivell);
+//  GPS.begin(9600);
+//  GPS.sendCommand(PMTK_SET_NMEA_OUTPUT_RMCGGA); //turn on RMC (recommended minimum) and GGA (fix data) including altitude
+//  GPS.sendCommand(PMTK_SET_NMEA_UPDATE_1HZ);   // 1 Hz update rate
+//  GPS.sendCommand(PGCMD_ANTENNA);
+//  useInterrupt(true);
 }
 
 SIGNAL(TIMER0_COMPA_vect) {
@@ -174,50 +174,78 @@ int consultarElectrovalvula(char e){
 }
 
 void loop(){
-  if(levelReady) noInterrupts(); 
-  if (Serial.available()) { //Si está disponible
-      Serial.readBytes(c, 2); //guardo la comanda, en general son 2 caracters per aixo llegeixo dos, si es una comanda d'un sol caracter saltara el timeout i nomes llegira un
-      if (*c == 'T') { //Si es una 'T', enviar temperatura
-        Serial.print("Recibido\n");
-        Serial.print(temperatura() + "\n");
-      } else if (*c == 'G') { //Si es una 'G', enviar dades gps
-        Serial.print("Recibido\n");
-        c++;
-        if(*c == 'F'){
-          if(GPS.fix) Serial.print("True" + "\n");
-          else Serial.print("False" + "\n");
-        }
-        if(*c = 'C'){  
-          if(GPS.fix){
-            Serial.print(GPS.latitude + " ");
-            Serial.print(GPS.longitude + "\n");          
-          }
-          else{
-            Serial.print("No fix\n");
-          }
-        }
-      }
-    
-     else if (*c == 'N') { //Si es una 'N', enviar dades sensor nivell
-       Serial.print("Recibido\n");
-       if(!levelReady) Serial.println("No disponible\n");
-       else{
-         Serial.print(sensorNivell() + "\n");
-         levelReady = false;
-         interrupts();
-       }
-     }
-     else if (*c == 'H') { //Si es una 'H', enviar dades sensor humitat
-       Serial.print("Recibido\n");
-       c++;
-       Serial.print(sensorHumitat(*c) + "\n");
-     }
-     else if (*c == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
-       Serial.print("Recibido\n");
-       c++;
-       if (*c = 'O') Serial.print(obrirElectrovalvula(*(c+1))+ "\n");
-       else if(*c = 'C') Serial.print(tancarElectrovalvula(*(c+1))+ "\n");
-       else if(*c = 'G') Serial.print(consultarElectrovalvula(*(c+1))+ "\n");
-     }
+//  do {
+//    Serial.print(Serial.available());
+//    Serial.print("\n");
+//    } while(Serial.available() == 0);
+  if(levelReady) {
+    noInterrupts(); 
+  }
+  if (Serial.available()> 0) { //Si está disponible
+      
+      c = Serial.read(); //guardo la comanda, en general son 2 caracters per aixo llegeixo dos, si es una comanda d'un sol caracter saltara el timeout i nomes llegira un
+      Serial.print(c);
+//      if (*c == 'T') { //Si es una 'T', enviar temperatura
+//        Serial.print("Recibido\n");
+//        Serial.print(temperatura());
+//        Serial.print("\n");
+//      } else if (*c == 'G') { //Si es una 'G', enviar dades gps
+//        Serial.print("Recibido\n");
+//        c++;
+//        if(*c == 'F'){
+//          if(GPS.fix) {
+//            Serial.print("True");
+//            Serial.print("\n");
+//          }
+//          else {
+//            Serial.print("False");
+//            Serial.print("\n");
+//          }
+//        }
+//        if(*c = 'C'){  
+//          if(GPS.fix){
+//            Serial.print(GPS.latitude);
+//            Serial.print(" ");
+//            Serial.print(GPS.longitude);
+//            Serial.print("\n");
+//          }
+//          else{
+//            Serial.print("No fix\n");
+//          }
+//        }
+//      }
+//    
+//     else if (*c == 'N') { //Si es una 'N', enviar dades sensor nivell
+//       Serial.print("Recibido\n");
+//       if(!levelReady) Serial.println("No disponible\n");
+//       else{
+//         Serial.print(sensorNivell());
+//         Serial.print("\n");
+//         levelReady = false;
+//         interrupts();
+//       }
+//     }
+//     else if (*c == 'H') { //Si es una 'H', enviar dades sensor humitat
+//       Serial.print("Recibido\n");
+//       c++;
+//       Serial.print(sensorHumitat(*c));
+//       Serial.print("\n");
+//     }
+//     else if (*c == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
+//       Serial.print("Recibido\n");
+//       c++;
+//       if (*c = 'O') {
+//         Serial.print(obrirElectrovalvula(*(c+1)));
+//         Serial.print("\n");
+//       }
+//       else if(*c = 'C') {
+//         Serial.print(tancarElectrovalvula(*(c+1)));
+//         Serial.print("\n");
+//       }
+//       else if(*c = 'G') {
+//         Serial.print(consultarElectrovalvula(*(c+1)));
+//         Serial.print("\n");
+//       }
+//     }
   }
 }
