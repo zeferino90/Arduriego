@@ -1,5 +1,6 @@
-char c[50];
+char c[5];
 int i = 0;
+int primercop = 0;
 
 void setup() {
   Serial.begin(115200);
@@ -10,6 +11,11 @@ void loop(){
   int bytes=Serial.available();
   for(int i=0; i<bytes; i++){
     c[i]=Serial.read();
+    primercop = 1;
   }
-  Serial.print(c);
+  if(primercop == 1){
+    primercop = 0;
+    Serial.print(c);
+  }
+  
 }
