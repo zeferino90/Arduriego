@@ -26,3 +26,8 @@ class forecast:
         self.historyJson = r.json()
         return self.historyJson
 
+'''import datetime
+    data = datetime.today()
+    data.strftime('%Y%m%d')'''
+#f.historyJson['history']['dailysummary'][0]['field']
+#f.forecastJson['current_observation']['field']
