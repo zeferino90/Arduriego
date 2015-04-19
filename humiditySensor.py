@@ -8,7 +8,7 @@ class humiditySensor:
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
 
     def getvalue(self, addr):
-        if addr < 1 and addr > 3:
+        if addr < 1 or addr > 3:
             self.quality = self.quality if self.quality != 1 else 0
         else:
             self.arduino.write("H"+ str(addr))
