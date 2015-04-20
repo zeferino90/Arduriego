@@ -2,7 +2,7 @@ from datetime import datetime
 from datetime import timedelta
 
 __author__ = 'zeferino'
-
+#moi es mas feo que pegar a un padre
 class plant:
     def __init__(self, name, cycle, siz, wtime):
         self.id = 0 #aixo es comprovara mirant el arxiu
