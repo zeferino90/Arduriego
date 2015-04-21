@@ -4,7 +4,8 @@ import pickle
 __author__ = 'zeferino'
 
 
-'''Añadir plantas con todos sus campos'''
+'''Añadir plantas con todos sus campos
+    añadir lat, long del gps'''
 
 print "ola k ase\n"
 print "Welcome to the setup program for ZefeRiego, the premier plant-watering application!\n"

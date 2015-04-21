@@ -9,6 +9,7 @@ class setupkeeper:
         self.thresholds = pickle.load(self.fileobject)
         self.sizes = pickle.load(self.fileobject)
         self.plants = pickle.load(self.fileobject)
+        self.gpscoordinates = pickle.load(self.fileobject)
         self.fileobject.close()
 
     def getConf(self):
@@ -18,6 +19,7 @@ class setupkeeper:
         self.thresholds = pickle.load(self.fileobject)
         self.sizes = pickle.load(self.fileobject)
         self.plants = pickle.load(self.fileobject)
+        self.gpscoordinates = pickle.load(self.fileobject)
         self.fileobject.close()
 
     def updateConf(self):
@@ -27,4 +29,5 @@ class setupkeeper:
         pickle.dump(self.thresholds, self.fileobject)
         pickle.dump(self.sizes, self.fileobject)
         pickle.dump(self.plants, self.fileobject)
+        pickle.dump(self.gpscoordinates, self.fileobject)
         self.fileobject.close()

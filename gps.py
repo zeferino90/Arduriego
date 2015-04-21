@@ -18,8 +18,8 @@ class gps:
             s = self.arduino.readline()
             sresult=s[0: len(s) - 1]
             sresults = sresult.split(" ")
-            self.lat = float(sresults[0])
-            self.long = float(sresults[1])
+            self.lat = sresults[0]
+            self.long = sresults[1]
         return (self.lat, self.long, self.quality)
 
     def getfix(self):
