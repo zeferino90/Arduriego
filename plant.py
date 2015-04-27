@@ -7,9 +7,9 @@ class plant:
     def __init__(self, name, cycle, siz, wtime):
         self.id = 0 #aixo es comprovara mirant el arxiu
         self.name = name
-        self.cycle = cycle
+        self.cycle = cycle #timedelta
         self.siz = siz
-        self.wateringTime = wtime #timedelta
+        self.wateringTime = wtime #timedelta for postpone
         self.postpone = False
         self.lastw = datetime.today()
 
@@ -48,3 +48,6 @@ class plant:
 
     def watered(self):
         self.lastw = datetime.today()
+
+    def nextWateringTime(self):
+        return self.lastw + self.cycle
