@@ -1,17 +1,20 @@
 from datetime import datetime
 from datetime import timedelta
+from humiditySensor import humiditySensor
 
 __author__ = 'zeferino'
 #moi es mas feo que pegar a un padre
 class plant:
-    def __init__(self, name, cycle, siz, wtime):
+    def __init__(self, name, cycle, siz, wtime, addres):
         self.id = 0 #aixo es comprovara mirant el arxiu
         self.name = name
         self.cycle = cycle #timedelta
         self.siz = siz
-        self.wateringTime = wtime #timedelta for postpone
+        self.wateringTime = wtime #deltatime for postpone
         self.postpone = False
         self.lastw = datetime.today()
+        self.sensorhumidity = humiditySensor()
+        self.humidityaddres = addres
 
     def getName(self):
         return self.name
@@ -30,6 +33,9 @@ class plant:
 
     def getPostpone(self):
         return self.postpone
+
+    def getHumidity(self):
+        return self.sensorhumidity.getvalue(self.humidityaddres)
 
     def setName(self, newname):
         self.name = newname
