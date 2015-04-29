@@ -7,12 +7,16 @@ from forecast import forecast
 from humiditySensor import humiditySensor
 from temperatureSensor import temperatureSensor
 from Electrovalve import Electrovalve
+from Levelsensor import Levelsensor
+import thread
 
 
 conf = setupkeeper()
 temp = temperatureSensor()
 valves = Electrovalve()
+level = Levelsensor()
 temperaturethreshold = 3
+levelthreshold = 400
 summer = [4, 9]
 timewhilewatering = 60
 rain_check = False #signal to check rain in that day
@@ -53,11 +57,23 @@ def time_in_range(start, end, x):
     else:
         return start <= x or x <= end
 
-def stopwatering():
-
+def stopwatering(plant):
+    time.sleep(360)
+    if level.getvalue() > levelthreshold:
+        valves.openvalve(7)
+    else:
+        valves.closevalve(7)
+    time.sleep(240)
+    valves.closevalve(plant+4)
+    return
 
 def watering(plant):
-
+    if level.getvalue() > levelthreshold:
+        valves.openvalve(7)
+    else:
+        valves.closevalve(7)
+    valves.openvalve(plant+4)
+    thread.start_new_thread(stopwatering, plant)
 
 while 1:
     actualdate = datetime.today()
