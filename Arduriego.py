@@ -9,6 +9,7 @@ from temperatureSensor import temperatureSensor
 from Electrovalve import Electrovalve
 from Levelsensor import Levelsensor
 import thread
+import setup
 
 
 conf = setupkeeper()
@@ -23,10 +24,11 @@ rain_check = False #signal to check rain in that day
 watering_action = False #signal to perform watering action
 watering_postpone = False #signal that means we have to water some plants but the last time we try to do it, we can't for some reasons
 plant_postpone = 0
+plant_to_water = 0
 deltatime = timedelta()
 rain_check_time = datetime.combine(date.today(), time(23, 59))
 
-def checkTimeToNextAction(raincheck, wateringaction, wateringpostpone, plantpostpone):
+def checkTimeToNextAction(raincheck, wateringaction, wateringpostpone, plantpostpone, planttowater):
     today = datetime.today()
     delta = rain_check_time - today
     raincheck = True
@@ -38,6 +40,7 @@ def checkTimeToNextAction(raincheck, wateringaction, wateringpostpone, plantpost
         if auxDelta < delta and auxDelta > timedelta(0):
             delta = auxDelta
             wateringaction = True
+            planttowater = i
             raincheck = False
             wateringpostpone = False
         auxDelta = conf.plants[i].getWateringTime() + conf.plants[i].getLastWatering() - today
@@ -75,6 +78,8 @@ def watering(plant):
     valves.openvalve(plant+4)
     thread.start_new_thread(stopwatering, plant)
 
+
+
 while 1:
     actualdate = datetime.today()
     conf.getConf()
@@ -99,8 +104,8 @@ while 1:
                     conf.plants[i].watered()
                     conf.plants[i].setPostpone(False)
             i += 1
+        deltatime = checkTimeToNextAction(rain_check, watering_action, watering_postpone, plant_postpone, plant_to_water)
         conf.updateConf()
-        deltatime = checkTimeToNextAction(rain_check, watering_action, watering_postpone, plant_postpone)
         time.sleep(deltatime.total_seconds())
     elif watering_postpone:
         #some plants have deferred watering actions
@@ -115,6 +120,7 @@ while 1:
                         if time_in_range(conf.schedule['summer'][0], conf.schedule['summer'][1], today.time()):
                             watering_postpone = False
                             watering(plant_postpone)
+                            conf.plants[plant_postpone].setPostpone(False)
                         else:
                             addtime = datetime.combine(date.today(), conf.schedule['summer'][0]) - today
                             conf.plants[plant_postpone].setWateringTime(conf.plants[plant_postpone].getWateringTime()+ addtime)
@@ -122,12 +128,46 @@ while 1:
                         if time_in_range(conf.schedule['winter'][0], conf.schedule['winter'][1], today.time()):
                             watering_postpone = False
                             watering(plant_postpone)
+                            conf.plants[plant_postpone].setPostpone(False)
                         else:
                             addtime = datetime.combine(date.today(), conf.schedule['winter'][0]) - today
                             conf.plants[plant_postpone].setWateringTime(conf.plants[plant_postpone].getWateringTime()+ addtime)
             else:
                 conf.plants[plant_postpone].setWateringTime(conf.plants[plant_postpone].getWateringTime()+ timedelta(1))
+        deltatime = checkTimeToNextAction(rain_check, watering_action, watering_postpone, plant_postpone, plant_to_water)
+        conf.updateConf()
+        time.sleep(deltatime.total_seconds())
+
     elif watering_action:
         #perform watering actions
-
-
+        humiditythreshold = 400 #esto hay que mirarlo
+        if conf.plants[plant_to_water].gethumidity() > humiditythreshold:
+            conf.plants[plant_to_water].watered()
+            watering_action = False
+        else:
+            if temp.getvalue() > temperaturethreshold:
+                    today = datetime.today()
+                    if time_in_range(summer[0], summer[1], today.month):
+                        if time_in_range(conf.schedule['summer'][0], conf.schedule['summer'][1], today.time()):
+                            watering_action = False
+                            watering(plant_to_water)
+                            conf.plants[plant_to_water].watered()
+                        else:
+                            addtime = datetime.combine(date.today(), conf.schedule['summer'][0]) - today
+                            conf.plants[plant_to_water].setWateringTime(addtime)
+                            conf.plants[plant_to_water].setPostpone(True)
+                    else:
+                        if time_in_range(conf.schedule['winter'][0], conf.schedule['winter'][1], today.time()):
+                            watering_action = False
+                            watering(plant_to_water)
+                            conf.plants[plant_to_water].watered()
+                        else:
+                            addtime = datetime.combine(date.today(), conf.schedule['winter'][0]) - today
+                            conf.plants[plant_to_water].setWateringTime(addtime)
+                            conf.plants[plant_to_water].setPostpone(True)
+            else:
+                conf.plants[plant_to_water].setWateringTime(timedelta(hours=1))
+                conf.plants[plant_to_water].setPostpone(True)
+        deltatime = checkTimeToNextAction(rain_check, watering_action, watering_postpone, plant_postpone, plant_to_water)
+        conf.updateConf()
+        time.sleep(deltatime.total_seconds())
