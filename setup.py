@@ -1,4 +1,6 @@
+from datetime import timedelta
 from datetime import datetime
+from datetime import time
 import pickle
 
 __author__ = 'zeferino'
@@ -13,16 +15,18 @@ print "Your options are:\n"
 print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system"
 print "'potsize' or 'p', to check and modify the planter sizes\n"
 print "'season' or 's', to check and modify seasonal options\n"
-print "'thresh' or 't', to check and modify the current rain thresholds "
+print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants"
+print "'plants' or 'pl'"
 print "'exit', to get a free* candy bar! (no refunds)\n"
 #PREPARATION, initial load and dictionary generation#
 
-fileObject = open("setup.txt",'wb')
+fileObject = open("setup.txt", "wb")
 
 cycles = pickle.load(fileObject)
 sizes = pickle.load(fileObject)
 seasons = pickle.load(fileObject)
 thresholds = pickle.load(fileObject)
+plants = pickle.load(fileObject)
 
 #EDITING, access to data
 command = input("Please input your choice: ")
@@ -36,11 +40,11 @@ if command == "cycles" or command == 'c':
     if cycleid != 0:
         newvalue = input("Input its new value: ")
         if cycleid == 1:
-            cycles["shortcycle"] = newvalue
+            cycles["shortcycle"] = timedelta(newvalue)
         elif cycleid == 2:
-            cycles["mediumcycle"] = newvalue
+            cycles["mediumcycle"] = timedelta(newvalue)
         elif cycleid == 3:
-            cycles["longcycle"] = newvalue
+            cycles["longcycle"] = timedelta(newvalue)
         else:
             print ("Incorrect Value\n")#check for it?
 
@@ -56,14 +60,15 @@ elif command == "potsize" or command == 'p':
         newvalue = input("Input its new value: ")
         if potsizeid == 1:
             sizes["small"] = newvalue
+            print ("The value has been successfully changed\n")
         elif potsizeid == 2:
             sizes["medium"] = newvalue
+            print ("The value has been successfully changed\n")
         elif potsizeid == 3:
             sizes["large"] = newvalue
+            print ("The value has been successfully changed\n")
         else:
             print ("Incorrect Value\n")#check for it?
-
-        print ("The value has been successfully changed\n")#check for it?
 
     print ("The only true pot size is 420\n")
 
@@ -77,9 +82,9 @@ elif command == "season" or command == 's':
     if seasonid != 0:
         if seasonid == 1:
             newvalue = input("Input its new starting hour. Format: HH MM ")
-            seasons["summer"][0] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
+            seasons["summer"][0] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
             newvalue = input("Input its new finishing hour. Format: HH MM ")
-            seasons["summer"][1] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
+            seasons["summer"][1] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
             print ("The value has been successfully changed\n")#check for it?
         if seasonid == 2:
             newvalue = input("Input its new starting hour. Format: HH MM ")
@@ -89,7 +94,33 @@ elif command == "season" or command == 's':
             print ("The value has been successfully changed\n")#check for it?
 
 elif command == "thresh" or command == 't':
-        thresholds
+        print ("Those are the thresholds rigth now:\n")
+        print ("1: Threshold for small pot size plant " + str(thresholds['smallthreshold'])+"\n")
+        print ("2: Threshold for medium pot size plant " + str(thresholds['mediumthreshold'])+"\n")
+        print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
+        thresholdid = input("Input the number of the threshold you wish to change (0 for none): ")
+        if thresholdid != 0:
+            newvalue = input("Input its new value: ")
+            if thresholdid == 1:
+                thresholds['smallthreshold'] = newvalue
+                print ("The value has been successfully changed\n")
+            elif thresholdid == 2:
+                thresholds['mediumthreshold'] = newvalue
+                print ("The value has been successfully changed\n")
+            elif thresholdid == 3:
+                thresholds['largethreshold'] = newvalue
+                print ("The value has been successfully changed\n")
+            else:
+                print ("Incorrect Value\n")
+
+elif command == "plants" or command == 'pl':
+    print ("THose are the plants:\n")
+    for i in range(0, 3):
+        print ("%d: " % (i))
+        print plants[i]
+        print ("\n\n")
+    plantid = input("")
+
 else:
     print("Learn to type you neanderthal")
 

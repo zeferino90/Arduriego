@@ -6,7 +6,6 @@ __author__ = 'zeferino'
 #moi es mas feo que pegar a un padre
 class plant:
     def __init__(self, name, cycle, siz, wtime, addres):
-        self.id = 0 #aixo es comprovara mirant el arxiu
         self.name = name
         self.cycle = cycle #timedelta
         self.siz = siz
@@ -15,6 +14,16 @@ class plant:
         self.lastw = datetime.today()
         self.sensorhumidity = humiditySensor()
         self.humidityaddres = addres
+
+    def __str__(self):
+        result = "name: " + self.name + "\n"
+        result += "cycle: " + str(self.cycle) + "\n"
+        result += "size: " + str(self.siz) + "\n"
+        result += "watering time: " + str(self.wateringTime) + "\n"
+        result += "postpone: " + str(self.postpone) + "\n"
+        result += "last watering: " + str(self.lastw) + "\n"
+        result += "humidity sensor address: " + str(self.humidityaddres) + "\n"
+        return result
 
     def getName(self):
         return self.name
