@@ -9,7 +9,7 @@ const int temp = A5;
 //pins dels sensors de humitat
 const int humitat1 = A4;
 const int humitat2 = A3;
-const int humitat3 = A3;
+const int humitat3 = A2;
 //pin del sensor nivell
 const int nivell = A1;
 //pins electrovalvulas
@@ -22,14 +22,15 @@ const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
 unsigned long t;
 long tempsUs;
 char c[5];
+int ic;
 int i;
-int primercop = 0;
+bool stringComplete;
 boolean usingInterrupt = false;
 Adafruit_GPS GPS(&mySerial);
 
 void setup(){
   Serial.begin(115200);
-  Serial.setTimeout(1000);//Timeout esperando en lecturas 1000 milis
+  //Serial.setTimeout(1000);//Timeout esperando en lecturas 1000 milis
   pinMode(valv1, OUTPUT);
   pinMode(valv2, OUTPUT);
   pinMode(valv3, OUTPUT);
@@ -103,32 +104,33 @@ float temperatura(){
 }
 
 int sensorNivell(){
+  //VALOR > 500 totalmente sumergido, si no vacio
   levelReady = false;
   t = millis();
   return analogRead(nivell); 
 }
 
 int sensorHumitat(char h){
-  if(h = '1') return analogRead(humitat1);
-  else if(h = '2') return analogRead(humitat2);
-  else if(h = '3') return analogRead(humitat3);
+  if(h == '1') return analogRead(humitat1);
+  else if(h == '2') return analogRead(humitat2);
+  else if(h == '3') return analogRead(humitat3);
   return -1;
 }
 
 int obrirElectrovalvula(char e){
-  if(e = '1') {
+  if(e == '1') {
     digitalWrite(valv1, HIGH);
     return 0;
   }
-  else if(e = '2'){
+  else if(e == '2'){
     digitalWrite(valv2, HIGH);
     return 0;
   }
-  else if(e = '3'){
+  else if(e == '3'){
     digitalWrite(valv3, HIGH);
     return 0;
   }
-  else if(e = '4'){
+  else if(e == '4'){
     digitalWrite(valv4_5, HIGH);
     return 0;
   }
@@ -136,19 +138,19 @@ int obrirElectrovalvula(char e){
 }
 
 int tancarElectrovalvula(char e){
-  if(e = '1') {
+  if(e == '1') {
     digitalWrite(valv1, LOW);
     return 0;
   }
-  else if(e = '2'){
+  else if(e == '2'){
     digitalWrite(valv2, LOW);
     return 0;
   }
-  else if(e = '3'){
+  else if(e == '3'){
     digitalWrite(valv3, LOW);
     return 0;
   }
-  else if(e = '4'){
+  else if(e == '4'){
     digitalWrite(valv4_5, LOW);
     return 0;
   }
@@ -156,19 +158,37 @@ int tancarElectrovalvula(char e){
 }
 
 int consultarElectrovalvula(char e){
-  if(e = '1') {
+  if(e == '1') {
     return digitalRead(valv1);
   }
-  else if(e = '2'){
+  else if(e == '2'){
     return digitalRead(valv2);
   }
-  else if(e = '3'){
+  else if(e == '3'){
     return digitalRead(valv3);
   }
-  else if(e = '4'){
+  else if(e == '4'){
     return digitalRead(valv4_5);
   }
   else return -1;
+}
+
+void serialEvent(){
+  while (Serial.available()) {
+    //Serial.print("añadido nuevo caracter: ");
+    char inChar = Serial.read(); 
+//    Serial.print(inChar);
+//    Serial.print(" ");
+//    Serial.print(ic);
+//    Serial.print("\n");
+    c[ic] = inChar;
+    ic++;
+    if (inChar == '\n') {
+      stringComplete = true;
+//      Serial.print("Terminado de leer\n");
+      ic = 0;
+    } 
+  }
 }
 
 void loop(){
@@ -177,22 +197,22 @@ void loop(){
      if(millis() - t > tempsnopreparat) levelReady = true;
   }
    //Si está disponible
-    int bytes=Serial.available();
-    for(int i=0; i<bytes; i++){
-    c[i]=Serial.read();
-    primercop = 1;
-    }
-  if(primercop == 1){
-    primercop = 0;
-    Serial.print(c);
-  } //llegeixo la comanda, tots els caracters que puc, el buffer es de 5 pero en realitat les comandes amb menys tenen prou
+   
+//      if(stringComplete){
+//        Serial.print(c);
+//        stringComplete = false;
+//        ic = 0;
+//      }
 
-      if (c[0] == 'T') { //Si es una 'T', enviar temperatura
+      if (c[0] == 'T' and stringComplete) { //Si es una 'T', enviar temperatura
         c[0] = '0';
         Serial.print("Recibido\n");
         Serial.print(temperatura());
         Serial.print("\n");
-      } else if (c[0] == 'G') { //Si es una 'G', enviar dades gps
+        stringComplete = false;
+        ic = 0;
+      } 
+      else if (c[0] == 'G' and stringComplete) { //Si es una 'G', enviar dades gps
         c[0] = '0';
         Serial.print("Recibido\n");
         if(c[1] == 'F'){
@@ -205,23 +225,25 @@ void loop(){
             Serial.print("\n");
           }
         }
-        if(c[1] = 'C'){  
+        else if(c[1] == 'C'){  
           if(GPS.fix){
-            Serial.print(GPS.latitude);
+            Serial.print(GPS.latitudeDegrees, 4);
             Serial.print(" ");
-            Serial.print(GPS.longitude);
+            Serial.print(GPS.longitudeDegrees, 4);
             Serial.print("\n");
           }
           else{
             Serial.print("No fix\n");
           }
         }
-        if(c[1] = 'S'){
+        else if(c[1] == 'S'){
           stateGPS();
         }
+        stringComplete = false;
+        ic = 0;
       }
     
-     else if (c[0] == 'N') { //Si es una 'N', enviar dades sensor nivell
+     else if (c[0] == 'N' and stringComplete) { //Si es una 'N', enviar dades sensor nivell
        c[0] = '0';
        Serial.print("Recibido\n");
        if(!levelReady) Serial.println("No disponible\n");
@@ -229,27 +251,33 @@ void loop(){
          Serial.print(sensorNivell());
          Serial.print("\n");
        }
+       stringComplete = false;
+        ic = 0;
      }
-     else if (c[0] == 'H') { //Si es una 'H', enviar dades sensor humitat
+     else if (c[0] == 'H' and stringComplete) { //Si es una 'H', enviar dades sensor humitat
        c[0] = '0';
        Serial.print("Recibido\n");
        Serial.print(sensorHumitat(c[1]));
        Serial.print("\n");
+       stringComplete = false;
+        ic = 0;
      }
-     else if (c[0] == 'E') { //Si es una 'E', obrir o tancar una electrovalvula
+     else if (c[0] == 'E' and stringComplete) { //Si es una 'E', obrir o tancar una electrovalvula
        c[0] = '0';
-       Serial.print("Recibido\n");
-       if (c[1] = 'O') {
+       Serial.print("RecibidoVALVE\n");
+       if (c[1] == 'O') {
          Serial.print(obrirElectrovalvula(c[2]));
          Serial.print("\n");
        }
-       else if(c[1] = 'C') {
+       else if(c[1] == 'C') {
          Serial.print(tancarElectrovalvula(c[2]));
          Serial.print("\n");
        }
-       else if(c[1] = 'G') {
+       else if(c[1] == 'G') {
          Serial.print(consultarElectrovalvula(c[2]));
          Serial.print("\n");
        }
+       stringComplete = false;
+       ic = 0;
      }
 }
