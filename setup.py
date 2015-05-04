@@ -2,31 +2,32 @@ from datetime import timedelta
 from datetime import datetime
 from datetime import time
 import pickle
+from plant import plant
+from gps import gps
 
 __author__ = 'zeferino'
 
 
-'''Añadir plantas con todos sus campos
-    añadir lat, long del gps'''
-
-print "ola k ase\n"
-print "Welcome to the setup program for ZefeRiego, the premier plant-watering application!\n"
+print "Welcome to the setup program for RaspyRiego, the premier plant-watering application!\n"
 print "Your options are:\n"
 print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system"
 print "'potsize' or 'p', to check and modify the planter sizes\n"
 print "'season' or 's', to check and modify seasonal options\n"
-print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants"
-print "'plants' or 'pl'"
+print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants\n"
+print "'plants' or 'pl, to check and modify the plants that you have'\n"
+print "'gps' or 'g', to update the GPS coordinates"
+
 print "'exit', to get a free* candy bar! (no refunds)\n"
 #PREPARATION, initial load and dictionary generation#
 
-fileObject = open("setup.txt", "wb")
+fileObject = open("setupconf", "r")
 
 cycles = pickle.load(fileObject)
 sizes = pickle.load(fileObject)
 seasons = pickle.load(fileObject)
 thresholds = pickle.load(fileObject)
 plants = pickle.load(fileObject)
+coordinates = pickle.load(fileObject)
 
 #EDITING, access to data
 command = input("Please input your choice: ")
@@ -114,12 +115,42 @@ elif command == "thresh" or command == 't':
                 print ("Incorrect Value\n")
 
 elif command == "plants" or command == 'pl':
-    print ("THose are the plants:\n")
+    print ("Those are the plants:\n")
     for i in range(0, 3):
         print ("%d: " % (i))
         print plants[i]
         print ("\n\n")
-    plantid = input("")
+    plantid = input("Input the number of the plant you wish to change (0 for none)")
+    if plantid != 0:
+        newname = input("Input its new name ")
+        plants[plantid].setName(newname)
+        newcycle = input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
+        plants[plantid].setCycle(timedelta(days=newcycle.split(" ")[1], hours=newcycle.split(" ")[0]))
+        newsize = input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
+        plants[plantid].setPotSize(newsize)
+        newwateringTime = input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
+        plants[plantid].setWateringTime(timedelta(hours=newcycle.split(" ")[1], minutes=newcycle.split(" ")[0]))
+        newpostpone = input("Input its new postpone value. Format: 'True', 'False'")
+        plants[plantid].setPostpone(bool(newpostpone))
+        newlastw = input("Do you want to update the last watering time? 'Y' or 'N'")
+        if newlastw == 'Y':
+            plants[plantid].watered()
+
+elif command == "gps" or command == 'g':
+        confirm = input("Do you want to update the gps location? 'Y' or 'N'")
+        if confirm == 'Y':
+            changed = False
+            now = datetime.today()
+            timetochange = datetime.today() - now
+            gpsmodule = gps()
+            while not changed and timetochange.minute <=timedelta(minutes=5):
+                print"."
+                if gpsmodule.getfix():
+                    coordinates = gpsmodule.getcoordinates()
+                    changed = True
+                    print "\nCorrectly updated\n"
+            if not changed:
+                print "Fail update. Try again"
 
 else:
     print("Learn to type you neanderthal")

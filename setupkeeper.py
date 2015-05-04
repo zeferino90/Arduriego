@@ -3,7 +3,7 @@ import pickle
 
 class setupkeeper:
     def __init__(self):
-        self.fileobject = open("setup.txt", 'r')
+        self.fileobject = open("setup.conf", 'r')
         self.cycles = pickle.load(self.fileobject)
         self.schedule = pickle.load(self.fileobject)
         self.thresholds = pickle.load(self.fileobject)
@@ -13,7 +13,7 @@ class setupkeeper:
         self.fileobject.close()
 
     def getConf(self):
-        self.fileobject = open("setup.txt", 'r')
+        self.fileobject = open("setup.conf", 'r')
         self.cycles = pickle.load(self.fileobject)
         self.schedule = pickle.load(self.fileobject)
         self.thresholds = pickle.load(self.fileobject)
@@ -23,7 +23,7 @@ class setupkeeper:
         self.fileobject.close()
 
     def updateConf(self):
-        self.fileobject = open("setup.txt", 'wb')
+        self.fileobject = open("setup.conf", 'wb')
         pickle.dump(self.cycles, self.fileobject)
         pickle.dump(self.schedule, self.fileobject)
         pickle.dump(self.thresholds, self.fileobject)
