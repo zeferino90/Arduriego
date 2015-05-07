@@ -1,9 +1,11 @@
 from datetime import timedelta
 from datetime import datetime
 from datetime import time
+import time as times
 import pickle
 from plant import plant
 from gps import gps
+import os.path
 
 __author__ = 'zeferino'
 
@@ -19,15 +21,39 @@ print "'gps' or 'g', to update the GPS coordinates"
 
 print "'exit', to get a free* candy bar! (no refunds)\n"
 #PREPARATION, initial load and dictionary generation#
+cycles = dict()
+sizes = dict()
+seasons = dict()
+thresholds = dict()
+plants = []
+coordinates = ()
 
-fileObject = open("setupconf", "r")
+if os.path.isfile("./setup.conf"):
+    fileObject = open("setup.conf", "r")
+    cycles = pickle.load(fileObject)
+    sizes = pickle.load(fileObject)
+    seasons = pickle.load(fileObject)
+    thresholds = pickle.load(fileObject)
+    plants = pickle.load(fileObject)
+    coordinates = pickle.load(fileObject)
+    fileObject.close()
+else:
+    cycles["shortcycle"] = timedelta(days=1)
+    cycles["mediumcycle"] = timedelta(days=2)
+    cycles["longcycle"] = timedelta(days=4)
+    sizes["small"] = 1
+    sizes["medium"] = 5
+    sizes["large"] = 20
+    seasons["summer"] = [time(21), time(23, 50)]
+    seasons["winter"] = [time(12), time(16)]
+    thresholds["smallthreshold"] = 25
+    thresholds["mediumthreshold"] = 15
+    thresholds["largethreshold"] = 10
+    coordinates = (41.22, 1.53)#por defecto la torre
+    plants.append(plant("margarita",cycles["shortcycle"],sizes["small"],timedelta(1),1))
+    plants.append(plant("cactus",cycles["mediumcycle"],sizes["medium"],timedelta(1),2))
+    plants.append(plant("magnolia",cycles["longcycle"],sizes["large"],timedelta(1),3))
 
-cycles = pickle.load(fileObject)
-sizes = pickle.load(fileObject)
-seasons = pickle.load(fileObject)
-thresholds = pickle.load(fileObject)
-plants = pickle.load(fileObject)
-coordinates = pickle.load(fileObject)
 
 #EDITING, access to data
 command = input("Please input your choice: ")
@@ -39,13 +65,13 @@ if command == "cycles" or command == 'c':
     print ("3: Long: " + cycles["longcycle"] + "\n")
     cycleid = input("Input the number of the cycle you wish to change (0 for none): ")
     if cycleid != 0:
-        newvalue = input("Input its new value: ")
+        newvalue = input("Input its new value: Format DD HH MM")
         if cycleid == 1:
-            cycles["shortcycle"] = timedelta(newvalue)
+            cycles["shortcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
         elif cycleid == 2:
-            cycles["mediumcycle"] = timedelta(newvalue)
+            cycles["mediumcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
         elif cycleid == 3:
-            cycles["longcycle"] = timedelta(newvalue)
+            cycles["longcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
         else:
             print ("Incorrect Value\n")#check for it?
 
@@ -101,7 +127,7 @@ elif command == "thresh" or command == 't':
         print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
         thresholdid = input("Input the number of the threshold you wish to change (0 for none): ")
         if thresholdid != 0:
-            newvalue = input("Input its new value: ")
+            newvalue = input("Input its new value: In litres")
             if thresholdid == 1:
                 thresholds['smallthreshold'] = newvalue
                 print ("The value has been successfully changed\n")
@@ -149,6 +175,7 @@ elif command == "gps" or command == 'g':
                     coordinates = gpsmodule.getcoordinates()
                     changed = True
                     print "\nCorrectly updated\n"
+                times.sleep(2)
             if not changed:
                 print "Fail update. Try again"
 

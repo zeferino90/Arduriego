@@ -35,4 +35,4 @@ class gps:
             else:
                 self.fix = True
         return (self.fix, self.quality)
-'''deberia poder pedir el estado del gps(si tiene señal o no) i pedir sus coordenadas'''
+'''deberia poder pedir el estado del gps(si tiene senal o no) i pedir sus coordenadas'''
