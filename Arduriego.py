@@ -18,6 +18,7 @@ valves = Electrovalve()
 level = Levelsensor()
 temperaturethreshold = 3
 levelthreshold = 400
+humiditythreshold = 500
 summer = [4, 9]
 timewhilewatering = 60
 rain_check = False #signal to check rain in that day
@@ -109,7 +110,6 @@ while 1:
         time.sleep(deltatime.total_seconds())
     elif watering_postpone:
         #some plants have deferred watering actions
-        humiditythreshold = 400 #esto hay que mirarlo
         if conf.plants[plant_postpone].gethumidity() > humiditythreshold:
             conf.plants[plant_postpone].watered()
             watering_postpone = False
@@ -140,7 +140,6 @@ while 1:
 
     elif watering_action:
         #perform watering actions
-        humiditythreshold = 400 #esto hay que mirarlo
         if conf.plants[plant_to_water].gethumidity() > humiditythreshold:
             conf.plants[plant_to_water].watered()
             watering_action = False

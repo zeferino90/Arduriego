@@ -7,9 +7,9 @@ SoftwareSerial mySerial(3, 2);
 //Pin del sensor de temperatura
 const int temp = A5;
 //pins dels sensors de humitat
-const int humitat1 = A4;
+const int humitat1 = A2;
 const int humitat2 = A3;
-const int humitat3 = A2;
+const int humitat3 = A4;
 //pin del sensor nivell
 const int nivell = A1;
 //pins electrovalvulas
@@ -98,7 +98,13 @@ void stateGPS(){
 
 float temperatura(){
   int sensorVal = analogRead(temp);
-  float voltatge = (sensorVal/1024.0) * 5.0;
+//  Serial.print("SensorVal: ");
+//  Serial.print(sensorVal);
+//  Serial.print("\n");
+  float voltatge = (sensorVal/1024.0) * 4.3; //el voltatge rel es 4.3V
+//  Serial.print("Vol: ");
+//  Serial.print(voltatge);
+//  Serial.print("\n");
   float temperatura = (voltatge - .5) * 100;
   return temperatura;
 }
