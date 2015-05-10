@@ -131,7 +131,7 @@ while command != 'exit':
             print ("1: Threshold for small pot size plant " + str(thresholds['smallthreshold'])+"\n")
             print ("2: Threshold for medium pot size plant " + str(thresholds['mediumthreshold'])+"\n")
             print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
-            thresholdid = raw_input("Input the number of the threshold you wish to change (0 for none): ")
+            thresholdid = raw_input("Input the number of the threshold you wish to change (0 for none): \n")
             if thresholdid != '0':
                 newvalue = int(raw_input("Input its new value: In litres"))
                 if thresholdid == '1':
@@ -149,9 +149,9 @@ while command != 'exit':
     elif command == "plants" or command == 'pl':
         print ("Those are the plants:\n")
         for i in range(0, 3):
-            print ("%d: " % (i))
+            print "%d: " % (i)
             print plants[i]
-            print ("\n\n")
+            print ("\n")
         plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
         if plantid != '0':
             newname = raw_input("Input its new name ")
