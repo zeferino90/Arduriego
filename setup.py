@@ -109,8 +109,8 @@ while command != 'exit':
         print ("Current seasonal watering schedules are:\n")
         #format = 12:10 13:03 (espai al mig)
         #llegir disc
-        print ("1: Summer: Plants will be watered from " + seasons["summer"][0] + " to " + seasons["summer"][1])
-        print ("2: Winter: Plants will be watered from " + seasons["winter"][0] + " to " + seasons["winter"][1])
+        print ("1: Summer: Plants will be watered from " + str(seasons["summer"][0]) + " to " + str(seasons["summer"][1]))
+        print ("2: Winter: Plants will be watered from " + str(seasons["winter"][0]) + " to " + str(seasons["winter"][1]))
         seasonid = raw_input("Input the number of the season you wish to change (0 for none): ")
         if seasonid != 0:
             if seasonid == 1:
