@@ -183,12 +183,14 @@ while command != 'exit':
                 gpsmodule = gps()
                 while not changed and timetochange.seconds <= timedelta(minutes=5).seconds:
                     print "."
-                    print str(gpsmodule.getfix()[0])
+                    print gpsmodule.getfix()[0]
+                    print timetochange.seconds
                     if gpsmodule.getfix()[0]:
                         coordinates = gpsmodule.getcoordinates()
                         changed = True
                         print "\nCorrectly updated\n"
                     times.sleep(2)
+                    timetochange = datetime.today() - now
                 if not changed:
                     print "Fail update. Try again"
 
