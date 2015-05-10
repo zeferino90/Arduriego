@@ -152,7 +152,7 @@ while command != 'exit':
             print "%d: " % (i+1)
             print plants[i]
             print ("\n")
-        plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
+        plantid = raw_input("Input the number of the plant you wish to change (0 for none)\n")
         if plantid != '0':
             newname = raw_input("Input its new name \n")
             plantid = int(plantid)-1
@@ -164,12 +164,16 @@ while command != 'exit':
             newwateringTime = raw_input("Input its new watering Time if it's postponed. Format: MM HH(number of minutes and number of hours until watering if postpone)\n")
             plants[plantid].setWateringTime(timedelta(hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[0])))
             newpostpone = raw_input("Input its new postpone value. Format: 'True', 'False'\n")
-            plants[plantid].setPostpone(bool(newpostpone))
+            if newpostpone == "False":
+                plants[plantid].setPostpone(False)
+            else:
+                plants[plantid].setPostpone(True)
             newlastw = raw_input("Do you want to update the last watering time? 'y' or 'n'\n")
             if newlastw == 'Y':
                 plants[plantid].watered()
 
     elif command == "gps" or command == 'g':
+            print ("Those are the current coordinates lat:{} long:{}\n".format(coordinates[0], coordinates[1]))
             confirm = raw_input("Do you want to update the gps location? 'y' or 'n'\n")
             if confirm == 'Y':
                 changed = False
