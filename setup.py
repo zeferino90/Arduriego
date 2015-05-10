@@ -68,11 +68,11 @@ if command == "cycles" or command == "c":
     while cycleid != '0':
         newvalue = raw_input("Input its new value: Format DD HH MM")
         if cycleid == '1':
-            cycles["shortcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
+            cycles["shortcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
         elif cycleid == '2':
-            cycles["mediumcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
+            cycles["mediumcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
         elif cycleid == '3':
-            cycles["longcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
+            cycles["longcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
         else:
             print ("Incorrect Value\n")#check for it?
         cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
