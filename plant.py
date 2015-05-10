@@ -50,7 +50,7 @@ class plant:
         self.name = newname
 
     def setCycle(self, newcycle):
-        self.cycl = newcycle
+        self.cycle = newcycle
 
     def setPotSize(self, newsize):
         self.siz = newsize

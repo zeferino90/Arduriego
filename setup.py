@@ -154,23 +154,23 @@ while command != 'exit':
             print ("\n")
         plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
         if plantid != '0':
-            newname = raw_input("Input its new name ")
+            newname = raw_input("Input its new name \n")
             plantid = int(plantid)-1
             plants[plantid].setName(newname)
-            newcycle = raw_input("Input its new watering cycle. Format: DD HH MM(number of days, hours and minutes between watering) ")
+            newcycle = raw_input("Input its new watering cycle. Format: DD HH MM(number of days, hours and minutes between watering) \n")
             plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[2]), hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[0])))
-            newsize = raw_input("Input its new pot size [small, medium, large]")
+            newsize = raw_input("Input its new pot size [small, medium, large]\n")
             plants[plantid].setPotSize(newsize)
-            newwateringTime = raw_input("Input its new watering Time if it's postponed. Format: MM HH(number of minutes and number of hours until watering if postpone)")
+            newwateringTime = raw_input("Input its new watering Time if it's postponed. Format: MM HH(number of minutes and number of hours until watering if postpone)\n")
             plants[plantid].setWateringTime(timedelta(hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[0])))
-            newpostpone = raw_input("Input its new postpone value. Format: 'True', 'False'")
+            newpostpone = raw_input("Input its new postpone value. Format: 'True', 'False'\n")
             plants[plantid].setPostpone(bool(newpostpone))
-            newlastw = raw_input("Do you want to update the last watering time? 'Y' or 'N'")
+            newlastw = raw_input("Do you want to update the last watering time? 'y' or 'n'\n")
             if newlastw == 'Y':
                 plants[plantid].watered()
 
     elif command == "gps" or command == 'g':
-            confirm = raw_input("Do you want to update the gps location? 'y' or 'n'")
+            confirm = raw_input("Do you want to update the gps location? 'y' or 'n'\n")
             if confirm == 'Y':
                 changed = False
                 now = datetime.today()
