@@ -57,7 +57,7 @@ else:
 
 #EDITING, access to data
 command = input("Please input your choice: ")
-if command == "cycles" or command == 'c':
+if command == "cycles" or command == "c":
     #toca llegir de arxiu
     print ("There are currently 3 watering cycles:")
     print ("1: Short: " + cycles["shortcycle"] + "\n") #toca afegir el que hem llegit del disc
