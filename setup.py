@@ -57,7 +57,7 @@ else:
 
 #EDITING, access to data
 command = raw_input("Please input your choice: ")
-print command
+
 if command == "cycles" or command == "c":
     #toca llegir de arxiu
     print ("There are currently 3 watering cycles:")
@@ -65,16 +65,17 @@ if command == "cycles" or command == "c":
     print ("2: Medium: " + str(cycles["mediumcycle"]) + "\n")
     print ("3: Long: " + str(cycles["longcycle"]) + "\n")
     cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
-    if cycleid != 0:
+    while cycleid != '0':
         newvalue = raw_input("Input its new value: Format DD HH MM")
-        if cycleid == 1:
+        if cycleid == '1':
             cycles["shortcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
-        elif cycleid == 2:
+        elif cycleid == '2':
             cycles["mediumcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
-        elif cycleid == 3:
+        elif cycleid == '3':
             cycles["longcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
         else:
             print ("Incorrect Value\n")#check for it?
+        cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
 
     print ("Check your watering privilege, gardenlord\n")
 
