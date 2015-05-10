@@ -157,8 +157,8 @@ while command != 'exit':
             newname = raw_input("Input its new name ")
             plantid = int(plantid)-1
             plants[plantid].setName(newname)
-            newcycle = raw_input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
-            plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[1]), hours=int(newcycle.split(" ")[0])))
+            newcycle = raw_input("Input its new watering cycle. Format: DD HH MM(number of days, hours and minutes between watering) ")
+            plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[0]), hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[2])))
             newsize = raw_input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
             plants[plantid].setPotSize(newsize)
             newwateringTime = raw_input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
