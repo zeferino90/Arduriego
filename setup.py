@@ -182,7 +182,8 @@ while command != 'exit':
                 timetochange = datetime.today() - now
                 gpsmodule = gps()
                 while not changed and timetochange.seconds <= timedelta(minutes=5).seconds:
-                    print"."
+                    print "."
+                    print str(gpsmodule.getfix()[0])
                     if gpsmodule.getfix()[0]:
                         coordinates = gpsmodule.getcoordinates()
                         changed = True
