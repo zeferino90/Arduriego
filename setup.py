@@ -57,6 +57,7 @@ else:
 
 #EDITING, access to data
 command = input("Please input your choice: ")
+print command
 if command == "cycles" or command == "c":
     #toca llegir de arxiu
     print ("There are currently 3 watering cycles:")
