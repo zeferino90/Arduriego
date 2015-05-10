@@ -50,9 +50,9 @@ else:
     thresholds["mediumthreshold"] = 15
     thresholds["largethreshold"] = 10
     coordinates = (41.22, 1.53)#por defecto la torre
-    plants.append(plant("margarita",cycles["shortcycle"],sizes["small"],timedelta(1),1, humiditySensor()))
-    plants.append(plant("cactus",cycles["mediumcycle"],sizes["medium"],timedelta(1),2, humiditySensor()))
-    plants.append(plant("magnolia",cycles["longcycle"],sizes["large"],timedelta(1),3, humiditySensor()))
+    plants.append(plant("margarita",cycles["shortcycle"], "small",timedelta(1),1, humiditySensor()))
+    plants.append(plant("cactus",cycles["mediumcycle"], "medium",timedelta(1),2, humiditySensor()))
+    plants.append(plant("magnolia",cycles["longcycle"], "large",timedelta(1),3, humiditySensor()))
 
 
 #EDITING, access to data
@@ -159,7 +159,7 @@ while command != 'exit':
             plants[plantid].setName(newname)
             newcycle = raw_input("Input its new watering cycle. Format: DD HH MM(number of days, hours and minutes between watering) ")
             plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[0]), hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[2])))
-            newsize = raw_input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
+            newsize = raw_input("Input its new pot size [small, (1l<)medium(<=5l), large(>5l)]")
             plants[plantid].setPotSize(newsize)
             newwateringTime = raw_input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
             plants[plantid].setWateringTime(timedelta(hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[0])))
