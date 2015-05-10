@@ -181,7 +181,7 @@ while command != 'exit':
                 now = datetime.today()
                 timetochange = datetime.today() - now
                 gpsmodule = gps()
-                while not changed and timetochange.minute <=timedelta(minutes=5):
+                while not changed and timetochange.seconds <=timedelta(minutes=5):
                     print"."
                     if gpsmodule.getfix():
                         coordinates = gpsmodule.getcoordinates()
