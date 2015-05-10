@@ -61,7 +61,7 @@ print command
 if command == "cycles" or command == "c":
     #toca llegir de arxiu
     print ("There are currently 3 watering cycles:")
-    print ("1: Short: " + cycles["shortcycle"] + "\n") #toca afegir el que hem llegit del disc
+    print ("1: Short: " + str(cycles["shortcycle"]) + "\n") #toca afegir el que hem llegit del disc
     print ("2: Medium: " + cycles["mediumcycle"] + "\n")
     print ("3: Long: " + cycles["longcycle"] + "\n")
     cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
