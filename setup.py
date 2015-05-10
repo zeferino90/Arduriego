@@ -89,15 +89,15 @@ while command != 'exit':
         print ("2: Medium: " + sizes["medium"] + "\n")
         print ("3: Large: " + sizes["large"] + "\n")
         potsizeid = raw_input("Input the number of the size you wish to change (0 for none): ")
-        if potsizeid != 0:
+        if potsizeid != '0':
             newvalue = raw_input("Input its new value: ")
-            if potsizeid == 1:
+            if potsizeid == '1':
                 sizes["small"] = newvalue
                 print ("The value has been successfully changed\n")
-            elif potsizeid == 2:
+            elif potsizeid == '2':
                 sizes["medium"] = newvalue
                 print ("The value has been successfully changed\n")
-            elif potsizeid == 3:
+            elif potsizeid == '3':
                 sizes["large"] = newvalue
                 print ("The value has been successfully changed\n")
             else:
@@ -112,14 +112,14 @@ while command != 'exit':
         print ("1: Summer: Plants will be watered from " + str(seasons["summer"][0]) + " to " + str(seasons["summer"][1]))
         print ("2: Winter: Plants will be watered from " + str(seasons["winter"][0]) + " to " + str(seasons["winter"][1]))
         seasonid = raw_input("Input the number of the season you wish to change (0 for none): ")
-        if seasonid != 0:
-            if seasonid == 1:
+        if seasonid != '0':
+            if seasonid == '1':
                 newvalue = raw_input("Input its new starting hour. Format: HH MM ")
                 seasons["summer"][0] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
                 seasons["summer"][1] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 print ("The value has been successfully changed\n")#check for it?
-            if seasonid == 2:
+            if seasonid == '2':
                 newvalue = raw_input("Input its new starting hour. Format: HH MM ")
                 seasons["winter"][0] = datetime.time(newvalue.split(" ")[0],newvalue.split(" ")[1])
                 newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
@@ -132,15 +132,15 @@ while command != 'exit':
             print ("2: Threshold for medium pot size plant " + str(thresholds['mediumthreshold'])+"\n")
             print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
             thresholdid = raw_input("Input the number of the threshold you wish to change (0 for none): ")
-            if thresholdid != 0:
+            if thresholdid != '0':
                 newvalue = raw_input("Input its new value: In litres")
-                if thresholdid == 1:
+                if thresholdid == '1':
                     thresholds['smallthreshold'] = newvalue
                     print ("The value has been successfully changed\n")
-                elif thresholdid == 2:
+                elif thresholdid == '2':
                     thresholds['mediumthreshold'] = newvalue
                     print ("The value has been successfully changed\n")
-                elif thresholdid == 3:
+                elif thresholdid == '3':
                     thresholds['largethreshold'] = newvalue
                     print ("The value has been successfully changed\n")
                 else:
@@ -153,8 +153,9 @@ while command != 'exit':
             print plants[i]
             print ("\n\n")
         plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
-        if plantid != 0:
+        if plantid != '0':
             newname = raw_input("Input its new name ")
+            plantid = int(plantid)
             plants[plantid].setName(newname)
             newcycle = raw_input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
             plants[plantid].setCycle(timedelta(days=newcycle.split(" ")[1], hours=newcycle.split(" ")[0]))
