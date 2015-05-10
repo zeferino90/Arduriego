@@ -56,7 +56,7 @@ else:
 
 
 #EDITING, access to data
-command = input("Please input your choice: ")
+command = raw_input("Please input your choice: ")
 print command
 if command == "cycles" or command == "c":
     #toca llegir de arxiu
@@ -64,9 +64,9 @@ if command == "cycles" or command == "c":
     print ("1: Short: " + cycles["shortcycle"] + "\n") #toca afegir el que hem llegit del disc
     print ("2: Medium: " + cycles["mediumcycle"] + "\n")
     print ("3: Long: " + cycles["longcycle"] + "\n")
-    cycleid = input("Input the number of the cycle you wish to change (0 for none): ")
+    cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
     if cycleid != 0:
-        newvalue = input("Input its new value: Format DD HH MM")
+        newvalue = raw_input("Input its new value: Format DD HH MM")
         if cycleid == 1:
             cycles["shortcycle"] = timedelta(days=newvalue.split(" ")[0], hours=newvalue.split(" ")[1], minutes=newvalue.split(" ")[2])
         elif cycleid == 2:
@@ -83,9 +83,9 @@ elif command == "potsize" or command == 'p':
     print ("1: Small: " + sizes["small"] + "\n")
     print ("2: Medium: " + sizes["medium"] + "\n")
     print ("3: Large: " + sizes["large"] + "\n")
-    potsizeid = input("Input the number of the size you wish to change (0 for none): ")
+    potsizeid = raw_input("Input the number of the size you wish to change (0 for none): ")
     if potsizeid != 0:
-        newvalue = input("Input its new value: ")
+        newvalue = raw_input("Input its new value: ")
         if potsizeid == 1:
             sizes["small"] = newvalue
             print ("The value has been successfully changed\n")
@@ -106,18 +106,18 @@ elif command == "season" or command == 's':
     #llegir disc
     print ("1: Summer: Plants will be watered from " + seasons["summer"][0] + " to " + seasons["summer"][1])
     print ("2: Winter: Plants will be watered from " + seasons["winter"][0] + " to " + seasons["winter"][1])
-    seasonid = input("Input the number of the season you wish to change (0 for none): ")
+    seasonid = raw_input("Input the number of the season you wish to change (0 for none): ")
     if seasonid != 0:
         if seasonid == 1:
-            newvalue = input("Input its new starting hour. Format: HH MM ")
+            newvalue = raw_input("Input its new starting hour. Format: HH MM ")
             seasons["summer"][0] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
-            newvalue = input("Input its new finishing hour. Format: HH MM ")
+            newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
             seasons["summer"][1] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
             print ("The value has been successfully changed\n")#check for it?
         if seasonid == 2:
-            newvalue = input("Input its new starting hour. Format: HH MM ")
+            newvalue = raw_input("Input its new starting hour. Format: HH MM ")
             seasons["winter"][0] = datetime.time(newvalue.split(" ")[0],newvalue.split(" ")[1])
-            newvalue = input("Input its new finishing hour. Format: HH MM ")
+            newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
             seasons["winter"][1] = datetime.time(newvalue.split(" ")[0],newvalue.split(" ")[1])
             print ("The value has been successfully changed\n")#check for it?
 
@@ -126,9 +126,9 @@ elif command == "thresh" or command == 't':
         print ("1: Threshold for small pot size plant " + str(thresholds['smallthreshold'])+"\n")
         print ("2: Threshold for medium pot size plant " + str(thresholds['mediumthreshold'])+"\n")
         print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
-        thresholdid = input("Input the number of the threshold you wish to change (0 for none): ")
+        thresholdid = raw_input("Input the number of the threshold you wish to change (0 for none): ")
         if thresholdid != 0:
-            newvalue = input("Input its new value: In litres")
+            newvalue = raw_input("Input its new value: In litres")
             if thresholdid == 1:
                 thresholds['smallthreshold'] = newvalue
                 print ("The value has been successfully changed\n")
@@ -147,24 +147,24 @@ elif command == "plants" or command == 'pl':
         print ("%d: " % (i))
         print plants[i]
         print ("\n\n")
-    plantid = input("Input the number of the plant you wish to change (0 for none)")
+    plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
     if plantid != 0:
-        newname = input("Input its new name ")
+        newname = raw_input("Input its new name ")
         plants[plantid].setName(newname)
-        newcycle = input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
+        newcycle = raw_input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
         plants[plantid].setCycle(timedelta(days=newcycle.split(" ")[1], hours=newcycle.split(" ")[0]))
-        newsize = input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
+        newsize = raw_input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
         plants[plantid].setPotSize(newsize)
-        newwateringTime = input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
+        newwateringTime = raw_input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
         plants[plantid].setWateringTime(timedelta(hours=newcycle.split(" ")[1], minutes=newcycle.split(" ")[0]))
-        newpostpone = input("Input its new postpone value. Format: 'True', 'False'")
+        newpostpone = raw_input("Input its new postpone value. Format: 'True', 'False'")
         plants[plantid].setPostpone(bool(newpostpone))
-        newlastw = input("Do you want to update the last watering time? 'Y' or 'N'")
+        newlastw = raw_input("Do you want to update the last watering time? 'Y' or 'N'")
         if newlastw == 'Y':
             plants[plantid].watered()
 
 elif command == "gps" or command == 'g':
-        confirm = input("Do you want to update the gps location? 'Y' or 'N'")
+        confirm = raw_input("Do you want to update the gps location? 'Y' or 'N'")
         if confirm == 'Y':
             changed = False
             now = datetime.today()
