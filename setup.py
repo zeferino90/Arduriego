@@ -121,9 +121,9 @@ while command != 'exit':
                 print ("The value has been successfully changed\n")#check for it?
             if seasonid == '2':
                 newvalue = raw_input("Input its new starting hour. Format: HH MM ")
-                seasons["winter"][0] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
+                seasons["winter"][0] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
-                seasons["winter"][1] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
+                seasons["winter"][1] = time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 print ("The value has been successfully changed\n")#check for it?
 
     elif command == "thresh" or command == 't':
