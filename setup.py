@@ -121,9 +121,9 @@ while command != 'exit':
                 print ("The value has been successfully changed\n")#check for it?
             if seasonid == '2':
                 newvalue = raw_input("Input its new starting hour. Format: HH MM ")
-                seasons["winter"][0] = datetime.time(newvalue.split(" ")[0],newvalue.split(" ")[1])
+                seasons["winter"][0] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 newvalue = raw_input("Input its new finishing hour. Format: HH MM ")
-                seasons["winter"][1] = datetime.time(newvalue.split(" ")[0],newvalue.split(" ")[1])
+                seasons["winter"][1] = datetime.time(int(newvalue.split(" ")[0]),int(newvalue.split(" ")[1]))
                 print ("The value has been successfully changed\n")#check for it?
 
     elif command == "thresh" or command == 't':
@@ -133,7 +133,7 @@ while command != 'exit':
             print ("3: Threshold for large pot size plant " + str(thresholds['largethreshold'])+"\n")
             thresholdid = raw_input("Input the number of the threshold you wish to change (0 for none): ")
             if thresholdid != '0':
-                newvalue = raw_input("Input its new value: In litres")
+                newvalue = int(raw_input("Input its new value: In litres"))
                 if thresholdid == '1':
                     thresholds['smallthreshold'] = newvalue
                     print ("The value has been successfully changed\n")
@@ -158,11 +158,11 @@ while command != 'exit':
             plantid = int(plantid)
             plants[plantid].setName(newname)
             newcycle = raw_input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
-            plants[plantid].setCycle(timedelta(days=newcycle.split(" ")[1], hours=newcycle.split(" ")[0]))
+            plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[1]), hours=int(newcycle.split(" ")[0])))
             newsize = raw_input("Input its new pot size [small(<=1l), (1l<)medium(<=5l), large(>5l)]")
             plants[plantid].setPotSize(newsize)
             newwateringTime = raw_input("Input its new watering Time if its postpone. Format: MM HH(number of minutes and number of hours until watering if postpone)")
-            plants[plantid].setWateringTime(timedelta(hours=newcycle.split(" ")[1], minutes=newcycle.split(" ")[0]))
+            plants[plantid].setWateringTime(timedelta(hours=int(newcycle.split(" ")[1]), minutes=int(newcycle.split(" ")[0])))
             newpostpone = raw_input("Input its new postpone value. Format: 'True', 'False'")
             plants[plantid].setPostpone(bool(newpostpone))
             newlastw = raw_input("Do you want to update the last watering time? 'Y' or 'N'")
