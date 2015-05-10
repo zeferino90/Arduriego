@@ -85,12 +85,12 @@ while command != 'exit':
 
     elif command == "potsize" or command == 'p':
         print "All available pot sizes are as follows:\n"
-        print ("1: Small: " + sizes["small"] + "\n")
-        print ("2: Medium: " + sizes["medium"] + "\n")
-        print ("3: Large: " + sizes["large"] + "\n")
+        print ("1: Small: " + str(sizes["small"]) + "\n")
+        print ("2: Medium: " + str(sizes["medium"]) + "\n")
+        print ("3: Large: " + str(sizes["large"]) + "\n")
         potsizeid = raw_input("Input the number of the size you wish to change (0 for none): ")
         if potsizeid != '0':
-            newvalue = raw_input("Input its new value: ")
+            newvalue = int(raw_input("Input its new value: "))
             if potsizeid == '1':
                 sizes["small"] = newvalue
                 print ("The value has been successfully changed\n")
