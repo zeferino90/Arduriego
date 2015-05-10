@@ -149,13 +149,13 @@ while command != 'exit':
     elif command == "plants" or command == 'pl':
         print ("Those are the plants:\n")
         for i in range(0, 3):
-            print "%d: " % (i)
+            print "%d: " % (i+1)
             print plants[i]
             print ("\n")
         plantid = raw_input("Input the number of the plant you wish to change (0 for none)")
         if plantid != '0':
             newname = raw_input("Input its new name ")
-            plantid = int(plantid)
+            plantid = int(plantid)-1
             plants[plantid].setName(newname)
             newcycle = raw_input("Input its new watering cycle. Format: HH D(number of hours and number of days between watering) ")
             plants[plantid].setCycle(timedelta(days=int(newcycle.split(" ")[1]), hours=int(newcycle.split(" ")[0])))
