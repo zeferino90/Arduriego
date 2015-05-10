@@ -5,17 +5,16 @@ from humiditySensor import humiditySensor
 __author__ = 'zeferino'
 #moi es mas feo que pegar a un padre
 class plant:
-    def __init__(self, name, cycle, siz, wtime, addres):
+    def __init__(self, name, cycle, siz, wtime, addres, sensorhumidity):
         self.name = name
         self.cycle = cycle #timedelta
         self.siz = siz
         self.wateringTime = wtime #deltatime for postpone
         self.postpone = False
         self.lastw = None
-        self.sensorhumidity = None
+        self.sensorhumidity = sensorhumidity
         #self.humidityaddres = addres
         self.lastw = datetime.today()
-        self.sensorhumidity = humiditySensor()
 
     def __str__(self):
         result = "name: " + self.name + "\n"

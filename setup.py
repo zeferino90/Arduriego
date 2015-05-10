@@ -50,9 +50,9 @@ else:
     thresholds["mediumthreshold"] = 15
     thresholds["largethreshold"] = 10
     coordinates = (41.22, 1.53)#por defecto la torre
-    plants.append(plant("margarita",cycles["shortcycle"],sizes["small"],timedelta(1),1))
-    plants.append(plant("cactus",cycles["mediumcycle"],sizes["medium"],timedelta(1),2))
-    plants.append(plant("magnolia",cycles["longcycle"],sizes["large"],timedelta(1),3))
+    plants.append(plant("margarita",cycles["shortcycle"],sizes["small"],timedelta(1),1, humiditySensor()))
+    plants.append(plant("cactus",cycles["mediumcycle"],sizes["medium"],timedelta(1),2, humiditySensor()))
+    plants.append(plant("magnolia",cycles["longcycle"],sizes["large"],timedelta(1),3, humiditySensor()))
 
 
 #EDITING, access to data
