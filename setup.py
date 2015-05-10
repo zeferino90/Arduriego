@@ -175,7 +175,7 @@ while command != 'exit':
     elif command == "gps" or command == 'g':
             print ("Those are the current coordinates lat:{} long:{}\n".format(coordinates[0], coordinates[1]))
             confirm = raw_input("Do you want to update the gps location? 'y' or 'n'\n")
-            if confirm == 'Y':
+            if confirm == 'y':
                 changed = False
                 now = datetime.today()
                 timetochange = datetime.today() - now
