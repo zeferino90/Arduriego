@@ -12,7 +12,7 @@ class plant:
         self.wateringTime = wtime #deltatime for postpone
         self.postpone = False
         self.lastw = None
-        #self.sensorhumidity = humiditySensor()
+        self.sensorhumidity = humiditySensor()
         #self.humidityaddres = addres
         self.lastw = datetime.today()
 
@@ -35,8 +35,8 @@ class plant:
     def getPotSize(self):
         return self.siz
 
-    # def getLastWatering(self):
-    #     return self.lastw
+    def getLastWatering(self):
+        return self.lastw
 
     def getWateringTime(self):
         return self.wateringTime
