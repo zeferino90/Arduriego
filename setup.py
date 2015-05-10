@@ -183,7 +183,7 @@ while command != 'exit':
                 gpsmodule = gps()
                 while not changed and timetochange.seconds <= timedelta(minutes=5).seconds:
                     print"."
-                    if gpsmodule.getfix():
+                    if gpsmodule.getfix()[0]:
                         coordinates = gpsmodule.getcoordinates()
                         changed = True
                         print "\nCorrectly updated\n"
