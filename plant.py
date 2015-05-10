@@ -12,9 +12,10 @@ class plant:
         self.wateringTime = wtime #deltatime for postpone
         self.postpone = False
         self.lastw = None
-        self.sensorhumidity = humiditySensor()
+        self.sensorhumidity = None
         #self.humidityaddres = addres
         self.lastw = datetime.today()
+        self.sensorhumidity = humiditySensor()
 
     def __str__(self):
         result = "name: " + self.name + "\n"
