@@ -3,7 +3,7 @@ from datetime import datetime
 from datetime import time
 import time as times
 import pickle
-from plant import plant
+from plant import *
 from gps import gps
 import os.path
 

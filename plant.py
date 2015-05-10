@@ -11,9 +11,9 @@ class plant:
         self.siz = siz
         self.wateringTime = wtime #deltatime for postpone
         self.postpone = False
-        self.lastw = datetime.today()
-        self.sensorhumidity = humiditySensor()
-        self.humidityaddres = addres
+        #self.lastw = datetime.today()
+        #self.sensorhumidity = humiditySensor()
+        #self.humidityaddres = addres
 
     def __str__(self):
         result = "name: " + self.name + "\n"
@@ -34,8 +34,8 @@ class plant:
     def getPotSize(self):
         return self.siz
 
-    def getLastWatering(self):
-        return self.lastw
+    # def getLastWatering(self):
+    #     return self.lastw
 
     def getWateringTime(self):
         return self.wateringTime
@@ -43,8 +43,8 @@ class plant:
     def getPostpone(self):
         return self.postpone
 
-    def getHumidity(self):
-        return self.sensorhumidity.getvalue(self.humidityaddres)
+    # def getHumidity(self):
+    #     return self.sensorhumidity.getvalue(self.humidityaddres)
 
     def setName(self, newname):
         self.name = newname
@@ -61,8 +61,8 @@ class plant:
     def setPostpone(self, newPostpone):
         self.postpone = newPostpone
 
-    def watered(self):
-        self.lastw = datetime.today()
+    # def watered(self):
+    #     self.lastw = datetime.today()
 
     def nextWateringTime(self):
         return self.lastw + self.cycle
