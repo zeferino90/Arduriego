@@ -49,20 +49,25 @@ def checkTimeToNextAction():
     i = 0
     while i < len(conf.plants):
         auxDelta = conf.plants[i].nextWateringTime() - today
-        if auxDelta < delta and auxDelta > timedelta(0):
+        writeLog("Watering AuxDelta{}: ".format(i) + str(auxDelta))
+        if auxDelta < delta:
             delta = auxDelta
             watering_action = True
             plant_to_water = i
             rain_check = False
             watering_postpone = False
         auxDelta = conf.plants[i].getWateringTime() + conf.plants[i].getLastWatering() - today
+        writeLog("postpone AuxDelta{}: ".format(i) + str(auxDelta))
         if conf.plants[i].getPostpone() and auxDelta <= delta:
-            delta = auxDelta
             plant_postpone = i
             watering_postpone = True
             rain_check = False
             watering_action = False
         i += 1
+    if auxDelta < timedelta(0):
+        delta = timedelta(0)
+    else:
+        delta = auxDelta
     writeLog("  Result:")
     writeLog("    wateringaction " + str(watering_action))
     writeLog("    planttowater " + str(plant_to_water))
@@ -101,12 +106,12 @@ checkTimeToNextAction()
 while 1:
     actualdate = datetime.today()
     writeLog("Actualdate: " + str(actualdate))
-    writeLog("  rain_check" + str(rain_check))
-    writeLog("  rain-check_time" + str(rain_check_time))
-    writeLog("  watering_action" + str(watering_action))
-    writeLog("  plan_to_water" + str(plant_to_water))
-    writeLog("  watering_postpone" + str(watering_postpone))
-    writeLog("  plant_postpone" + str(plant_postpone))
+    writeLog("  rain_check : " + str(rain_check))
+    writeLog("  rain-check_time: " + str(rain_check_time))
+    writeLog("  watering_action: " + str(watering_action))
+    writeLog("  plan_to_water: " + str(plant_to_water))
+    writeLog("  watering_postpone: " + str(watering_postpone))
+    writeLog("  plant_postpone: " + str(plant_postpone))
     if not conf.isread():
         conf.getConf()
         writeLog("Conf update")
@@ -137,7 +142,7 @@ while 1:
         deltatime = checkTimeToNextAction()
         conf.updateConf()
         writeLog("Sleeeping while " + str(deltatime.total_seconds()))
-        times.sleep(deltatime.total_seconds())
+        times.sleep(int(deltatime.total_seconds()))
     elif watering_postpone:
         writeLog("Watering postpone action")
         #some plants have deferred watering actions
@@ -168,12 +173,13 @@ while 1:
         deltatime = checkTimeToNextAction()
         conf.updateConf()
         writeLog("Sleeeping while " + str(deltatime.total_seconds()))
-        times.sleep(deltatime.total_seconds())
+
+        times.sleep(int(deltatime.total_seconds()))
 
     elif watering_action:
         writeLog("Watering action")
         #perform watering actions
-        if conf.plants[plant_to_water].gethumidity() > humiditythreshold:
+        if conf.plants[plant_to_water].getHumidity() > humiditythreshold:
             conf.plants[plant_to_water].watered()
             watering_action = False
         else:
@@ -203,4 +209,4 @@ while 1:
         deltatime = checkTimeToNextAction()
         conf.updateConf()
         writeLog("Sleeeping while " + str(deltatime.total_seconds()))
-        times.sleep(deltatime.total_seconds())
+        times.sleep(int(deltatime.total_seconds()))
