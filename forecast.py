@@ -1,7 +1,6 @@
 __author__ = 'zeferino'
 
 import requests
-import json
 
 
 class forecast:

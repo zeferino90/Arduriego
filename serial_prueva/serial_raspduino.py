@@ -1,11 +1,12 @@
 import serial
  
-arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
+arduino = serial.Serial('/dev/tty.usbmodem621', 115200, timeout= 3.0)
  
 print("Starting!")
  
 while True:
       comando = raw_input('Introduce un comando: ') #Input
+      comando += "\n"
       arduino.write(comando) #Mandar un comando hacia Arduino
       s = arduino.readline()
       print s

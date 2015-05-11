@@ -252,7 +252,7 @@ void loop(){
      else if (c[0] == 'N' and stringComplete) { //Si es una 'N', enviar dades sensor nivell
        c[0] = '0';
        Serial.print("Recibido\n");
-       if(!levelReady) Serial.println("No disponible\n");
+       if(!levelReady) Serial.println("-1\n");
        else{
          Serial.print(sensorNivell());
          Serial.print("\n");

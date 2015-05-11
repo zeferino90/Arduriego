@@ -1,6 +1,4 @@
-from datetime import timedelta
-from datetime import datetime
-from datetime import time
+from datetime import *
 import time as times
 import pickle
 from plant import *
@@ -12,7 +10,7 @@ __author__ = 'zeferino'
 
 print "Welcome to the setup program for RaspyRiego, the premier plant-watering application!\n"
 print "Your options are:\n"
-print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system"
+print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
 print "'potsize' or 'p', to check and modify the planter sizes\n"
 print "'season' or 's', to check and modify seasonal options\n"
 print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants\n"
@@ -38,17 +36,17 @@ if os.path.isfile("./setup.conf"):
     coordinates = pickle.load(fileObject)
     fileObject.close()
 else:
-    cycles["shortcycle"] = timedelta(days=1)
-    cycles["mediumcycle"] = timedelta(days=2)
-    cycles["longcycle"] = timedelta(days=4)
-    sizes["small"] = 1
-    sizes["medium"] = 5
-    sizes["large"] = 20
-    seasons["summer"] = [time(21), time(23, 50)]
-    seasons["winter"] = [time(12), time(16)]
-    thresholds["smallthreshold"] = 25
-    thresholds["mediumthreshold"] = 15
-    thresholds["largethreshold"] = 10
+    cycles['shortcycle'] = timedelta(days=1)
+    cycles['mediumcycle'] = timedelta(days=2)
+    cycles['longcycle'] = timedelta(days=4)
+    sizes['small'] = 1
+    sizes['medium'] = 5
+    sizes['large'] = 20
+    seasons['summer'] = [time(21), time(23, 50)]
+    seasons['winter'] = [time(12), time(16)]
+    thresholds['smallthreshold'] = 25
+    thresholds['mediumthreshold'] = 15
+    thresholds['largethreshold'] = 10
     coordinates = (41.22, 1.53)#por defecto la torre
     plants.append(plant("margarita",cycles["shortcycle"], "small",timedelta(1),1, humiditySensor()))
     plants.append(plant("cactus",cycles["mediumcycle"], "medium",timedelta(1),2, humiditySensor()))
@@ -198,7 +196,7 @@ while command != 'exit':
         print("Learn to type you neanderthal")
 
     print "Your options are:\n"
-    print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system"
+    print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
     print "'potsize' or 'p', to check and modify the planter sizes\n"
     print "'season' or 's', to check and modify seasonal options\n"
     print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants\n"
@@ -222,3 +220,4 @@ pickle.dump(thresholds, fileObject)
 pickle.dump(plants, fileObject)
 pickle.dump(coordinates, fileObject)
 fileObject.close()
+
