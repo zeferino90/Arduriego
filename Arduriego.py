@@ -35,9 +35,11 @@ def writeLog(log):
     f.close()
 
 def checkTimeToNextAction():
-    writeLog("Check Time to Next Action")
+    writeLog("    Check Time to Next Action")
     today = datetime.today()
+    writeLog("        Today: {}".format(today))
     delta = rain_check_time - today
+    writeLog("        delta init: {}".format(delta))
     global rain_check
     rain_check = True
     global watering_action
@@ -49,31 +51,34 @@ def checkTimeToNextAction():
     i = 0
     while i < len(conf.plants):
         auxDelta = conf.plants[i].nextWateringTime() - today
-        writeLog("Watering AuxDelta{}: ".format(i) + str(auxDelta))
+
         if auxDelta < delta:
+            writeLog("       NextWatering time planta{}: ".format(i) + str(conf.plants[i].nextWateringTime()))
+            writeLog("        Watering AuxDelta{}: ".format(i) + str(auxDelta))
             delta = auxDelta
             watering_action = True
             plant_to_water = i
             rain_check = False
             watering_postpone = False
-        auxDelta = conf.plants[i].getWateringTime() + conf.plants[i].getLastWatering() - today
-        writeLog("postpone AuxDelta{}: ".format(i) + str(auxDelta))
+        auxDelta = (conf.plants[i].getWateringTime() + conf.plants[i].nextWateringTime()) - today
         if conf.plants[i].getPostpone() and auxDelta <= delta:
+            writeLog("        postpone AuxDelta{}: ".format(i) + str(auxDelta))
             plant_postpone = i
             watering_postpone = True
             rain_check = False
             watering_action = False
+            delta = auxDelta
         i += 1
-    if auxDelta < timedelta(0):
+    if delta < timedelta(0):
+        writeLog("    Negative delta")
         delta = timedelta(0)
-    else:
-        delta = auxDelta
-    writeLog("  Result:")
-    writeLog("    wateringaction " + str(watering_action))
-    writeLog("    planttowater " + str(plant_to_water))
-    writeLog("    raincheck " + str(rain_check))
-    writeLog("    wateringpostpone " + str(watering_postpone))
-    writeLog("    plantpostpone " + str(plant_postpone))
+    writeLog("      Result:")
+    writeLog("        wateringaction " + str(watering_action))
+    writeLog("        planttowater " + str(plant_to_water))
+    writeLog("        raincheck " + str(rain_check))
+    writeLog("        wateringpostpone " + str(watering_postpone))
+    writeLog("        plantpostpone " + str(plant_postpone))
+    writeLog("        delta " + str(delta))
     return delta
 
 def time_in_range(start, end, x):
@@ -102,12 +107,15 @@ def watering(plant):
     thread.start_new_thread(stopwatering, plant)
 
 
-checkTimeToNextAction()
+deltatime = checkTimeToNextAction()
+writeLog("Sleeeping while " + str(deltatime.total_seconds()))
+
+times.sleep(int(deltatime.total_seconds()))
 while 1:
     actualdate = datetime.today()
     writeLog("Actualdate: " + str(actualdate))
     writeLog("  rain_check : " + str(rain_check))
-    writeLog("  rain-check_time: " + str(rain_check_time))
+    writeLog("  rain_check_time: " + str(rain_check_time))
     writeLog("  watering_action: " + str(watering_action))
     writeLog("  plan_to_water: " + str(plant_to_water))
     writeLog("  watering_postpone: " + str(watering_postpone))
@@ -122,19 +130,21 @@ while 1:
         todayforecast = forecast(conf.gpscoordinates[0], conf.gpscoordinates[1])
         todayforecast.getCurrentWeather()
         rain_today = int(todayforecast.forecastJson['current_observation']['precip_today_metric'])
-        writeLog("Rain today: " + str(rain_today))
+        writeLog("    Rain today: " + str(rain_today))
         i = 0
         while i < len(conf.plants):
             if conf.plants[i].getPotSize() == 'small':
-                writeLog("Small threshold: " + str(conf.thresholds['smallthreshold']))
+                writeLog("    Small threshold: " + str(conf.thresholds['smallthreshold']))
                 if rain_today > conf.thresholds['smallthreshold']:
                     conf.plants[i].watered()
                     conf.plants[i].setPostpone(False)
             elif conf.plants[i].getPotSize() == 'medium':
+                writeLog("    Medium threshold: " + str(conf.thresholds['mediumthreshold']))
                 if rain_today > conf.thresholds['mediumthreshold']:
                     conf.plants[i].watered()
                     conf.plants[i].setPostpone(False)
             elif conf.plants[i].getPotSize() == 'large':
+                writeLog("    Large threshold: " + str(conf.thresholds['largethreshold']))
                 if rain_today > conf.thresholds['largethreshold']:
                     conf.plants[i].watered()
                     conf.plants[i].setPostpone(False)
@@ -180,30 +190,37 @@ while 1:
         writeLog("Watering action")
         #perform watering actions
         if conf.plants[plant_to_water].getHumidity() > humiditythreshold:
+            writeLog("    Plant{} watered".format(plant_to_water))
             conf.plants[plant_to_water].watered()
             watering_action = False
         else:
             if temp.getvalue() > temperaturethreshold:
-                    today = datetime.today()
-                    if time_in_range(summer[0], summer[1], today.month):
-                        if time_in_range(conf.schedule['summer'][0], conf.schedule['summer'][1], today.time()):
-                            watering_action = False
-                            watering(plant_to_water)
-                            conf.plants[plant_to_water].watered()
-                        else:
-                            addtime = datetime.combine(date.today(), conf.schedule['summer'][0]) - today
-                            conf.plants[plant_to_water].setWateringTime(addtime)
-                            conf.plants[plant_to_water].setPostpone(True)
+                writeLog("    Checking temperature plant{}".format(plant_to_water))
+                today = datetime.today()
+                if time_in_range(summer[0], summer[1], today.month):
+                    if time_in_range(conf.schedule['summer'][0], conf.schedule['summer'][1], today.time()):
+                        writeLog("    Plant{} in range".format(plant_to_water))
+                        watering_action = False
+                        watering(plant_to_water)
+                        conf.plants[plant_to_water].watered()
                     else:
-                        if time_in_range(conf.schedule['winter'][0], conf.schedule['winter'][1], today.time()):
-                            watering_action = False
-                            watering(plant_to_water)
-                            conf.plants[plant_to_water].watered()
-                        else:
-                            addtime = datetime.combine(date.today(), conf.schedule['winter'][0]) - today
-                            conf.plants[plant_to_water].setWateringTime(addtime)
-                            conf.plants[plant_to_water].setPostpone(True)
+                        writeLog("    Plant{} postponed because is out of watering schedule".format(plant_to_water))
+                        addtime = datetime.combine(date.today(), conf.schedule['summer'][0]) - today
+                        conf.plants[plant_to_water].setWateringTime(addtime)
+                        conf.plants[plant_to_water].setPostpone(True)
+                else:
+                    if time_in_range(conf.schedule['winter'][0], conf.schedule['winter'][1], today.time()):
+                        writeLog("    Plant{} in range".format(plant_to_water))
+                        watering_action = False
+                        watering(plant_to_water)
+                        conf.plants[plant_to_water].watered()
+                    else:
+                        writeLog("    Plant{} postponed because is out of watering schedule".format(plant_to_water))
+                        addtime = datetime.combine(date.today(), conf.schedule['winter'][0]) - today
+                        conf.plants[plant_to_water].setWateringTime(addtime)
+                        conf.plants[plant_to_water].setPostpone(True)
             else:
+                writeLog("    Plant{} postponed".format(plant_to_water))
                 conf.plants[plant_to_water].setWateringTime(timedelta(hours=1))
                 conf.plants[plant_to_water].setPostpone(True)
         deltatime = checkTimeToNextAction()

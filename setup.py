@@ -36,9 +36,9 @@ if os.path.isfile("./setup.conf"):
     coordinates = pickle.load(fileObject)
     fileObject.close()
 else:
-    cycles['shortcycle'] = timedelta(days=1)
-    cycles['mediumcycle'] = timedelta(days=2)
-    cycles['longcycle'] = timedelta(days=4)
+    cycles['shortcycle'] = timedelta(minutes=2)
+    cycles['mediumcycle'] = timedelta(minutes=3)
+    cycles['longcycle'] = timedelta(minutes=4)
     sizes['small'] = 1
     sizes['medium'] = 5
     sizes['large'] = 20
