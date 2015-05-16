@@ -7,7 +7,7 @@ class gps:
         self.long = 0
         self.fix = False
         self.quality = -1 #-1 valor invalido / 0 valor viejo / 1 valor bueno
-        self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
+        self.arduino = serial.Serial('/dev/tty.usbmodem621', 115200, timeout= 1.0)
 
     def getcoordinates(self):
         self.arduino.write("GC" + "\n")

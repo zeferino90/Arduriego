@@ -27,7 +27,8 @@ watering_postpone = False #signal that means we have to water some plants but th
 plant_postpone = 0
 plant_to_water = 0
 deltatime = timedelta()
-rain_check_time = datetime.combine(date.today(), time(23, 59))
+#rain_check_time = datetime.combine(date.today(), time(23, 59))
+rain_check_time = datetime.today()
 
 def writeLog(log):
     f = open("logsArduriego.txt", "a")
@@ -52,7 +53,7 @@ def checkTimeToNextAction():
     while i < len(conf.plants):
         auxDelta = conf.plants[i].nextWateringTime() - today
 
-        if auxDelta < delta:
+        if auxDelta < delta and not conf.plants[i].getPostpone():
             writeLog("       NextWatering time planta{}: ".format(i) + str(conf.plants[i].nextWateringTime()))
             writeLog("        Watering AuxDelta{}: ".format(i) + str(auxDelta))
             delta = auxDelta
@@ -89,26 +90,34 @@ def time_in_range(start, end, x):
         return start <= x or x <= end
 
 def stopwatering(plant):
-    time.sleep(360)
-    if level.getvalue() > levelthreshold:
+    writeLog("Thread start its function for plant {}".format(plant))
+    times.sleep(10)
+
+    if level.getvalue()[0] > levelthreshold:
         valves.openvalve(7)
     else:
         valves.closevalve(7)
-    time.sleep(240)
+    times.sleep(10)
     valves.closevalve(plant+4)
+    writeLog("Thread finish watering plant {}".format(plant))
     return
 
 def watering(plant):
-    if level.getvalue() > levelthreshold:
+    writeLog("Init watering function plant {}".format(plant))
+    writeLog("    Tank level {}".format(level.getvalue()[0]))
+    if level.getvalue()[0] > levelthreshold:
+        writeLog("    Watering with tank water")
         valves.openvalve(7)
     else:
+        writeLog("    Watering without tank water")
         valves.closevalve(7)
     valves.openvalve(plant+4)
-    thread.start_new_thread(stopwatering, plant)
+    writeLog("    Starting watering thread")
+    thread.start_new_thread(stopwatering, (plant,))
 
 
 deltatime = checkTimeToNextAction()
-writeLog("Sleeeping while " + str(deltatime.total_seconds()))
+writeLog("Sleeeping while " + str(deltatime.total_seconds()) + " seconds\n")
 
 times.sleep(int(deltatime.total_seconds()))
 while 1:
@@ -151,16 +160,16 @@ while 1:
             i += 1
         deltatime = checkTimeToNextAction()
         conf.updateConf()
-        writeLog("Sleeeping while " + str(deltatime.total_seconds()))
+        writeLog("Sleeeping while " + str(deltatime.total_seconds()) + " seconds\n")
         times.sleep(int(deltatime.total_seconds()))
     elif watering_postpone:
         writeLog("Watering postpone action")
         #some plants have deferred watering actions
-        if conf.plants[plant_postpone].gethumidity() > humiditythreshold:
+        if conf.plants[plant_postpone].gethumidity()[0] < humiditythreshold:
             conf.plants[plant_postpone].watered()
             watering_postpone = False
         else:
-            if temp.getvalue() > temperaturethreshold:
+            if temp.getvalue()[0] > temperaturethreshold:
                     today = datetime.today()
                     if time_in_range(summer[0], summer[1], today.month):
                         if time_in_range(conf.schedule['summer'][0], conf.schedule['summer'][1], today.time()):
@@ -182,19 +191,20 @@ while 1:
                 conf.plants[plant_postpone].setWateringTime(conf.plants[plant_postpone].getWateringTime()+ timedelta(1))
         deltatime = checkTimeToNextAction()
         conf.updateConf()
-        writeLog("Sleeeping while " + str(deltatime.total_seconds()))
+        writeLog("Sleeeping while " + str(deltatime.total_seconds()) + " seconds\n")
 
         times.sleep(int(deltatime.total_seconds()))
 
     elif watering_action:
         writeLog("Watering action")
+        writeLog("Humidity {}".format(conf.plants[plant_to_water].getHumidity()))
         #perform watering actions
-        if conf.plants[plant_to_water].getHumidity() > humiditythreshold:
+        if conf.plants[plant_to_water].getHumidity()[0] < humiditythreshold:
             writeLog("    Plant{} watered".format(plant_to_water))
             conf.plants[plant_to_water].watered()
             watering_action = False
         else:
-            if temp.getvalue() > temperaturethreshold:
+            if temp.getvalue()[0] > temperaturethreshold:
                 writeLog("    Checking temperature plant{}".format(plant_to_water))
                 today = datetime.today()
                 if time_in_range(summer[0], summer[1], today.month):
@@ -225,5 +235,5 @@ while 1:
                 conf.plants[plant_to_water].setPostpone(True)
         deltatime = checkTimeToNextAction()
         conf.updateConf()
-        writeLog("Sleeeping while " + str(deltatime.total_seconds()))
+        writeLog("Sleeeping while " + str(deltatime.total_seconds()) + " seconds\n")
         times.sleep(int(deltatime.total_seconds()))
