@@ -197,8 +197,8 @@ while command != 'exit':
         print("This is a invalid option")
 
     print "Your options are:\n"
-    print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
-    print "'potsize' or 'p', to check and modify the planter sizes\n"
+    #print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
+    #print "'potsize' or 'p', to check and modify the planter sizes\n"
     print "'season' or 's', to check and modify seasonal options\n"
     print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants\n"
     print "'plants' or 'pl, to check and modify the plants that you have'\n"
