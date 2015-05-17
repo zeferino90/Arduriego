@@ -24,7 +24,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if sresult == "Recibido":
+                if not sresult.is_integer():
                     self.value = -1
                 else:
                     self.value = int(sresult)
@@ -47,7 +47,10 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                self.value = int(sresult)
+                if not sresult.is_integer():
+                    self.value = -1
+                else:
+                    self.value = int(sresult)
         return self.value, self.quality
 
     def closevalve(self, addr):
@@ -67,5 +70,8 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                self.value = int(sresult)
+                if not sresult.is_integer():
+                    self.value = -1
+                else:
+                    self.value = int(sresult)
         return self.value, self.quality

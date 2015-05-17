@@ -43,7 +43,8 @@ class plant:
         return self.postpone
 
     def getHumidity(self):
-        return humiditySensor().getvalue(self.humidityaddres)
+        s = humiditySensor()
+        return s.getvalue(self.humidityaddres)
 
     def setName(self, newname):
         self.name = newname
