@@ -8,6 +8,8 @@ class Levelsensor:
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
 
     def getvalue(self):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         self.arduino.write("N" + "\n")
         s = self.arduino.readline()
         if s !="Recibido\n":

@@ -18,6 +18,8 @@ class Electrovalve:
             return False
 
     def getstate(self, addr):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         if addr < 1 or addr > 4:
             print "Invalid ddres \n"
             self.quality = self.quality if self.quality != 1 else 0
@@ -41,6 +43,8 @@ class Electrovalve:
         return self.value, self.quality
 
     def openvalve(self, addr):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         if addr < 1 or addr > 4:
             print "Invalid ddres \n"
             self.quality = self.quality if self.quality != 1 else 0
@@ -64,6 +68,8 @@ class Electrovalve:
         return self.value, self.quality
 
     def closevalve(self, addr):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         if addr < 1 or addr > 4:
             print "Invalid ddres \n"
             self.quality = self.quality if self.quality != 1 else 0

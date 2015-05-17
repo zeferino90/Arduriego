@@ -8,6 +8,8 @@ class temperatureSensor:
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
         #'''/dev/ttyACM0'''
     def getvalue(self):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         self.arduino.write("T" + "\n")
         s = self.arduino.readline()
         if s !="Recibido\n":

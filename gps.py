@@ -10,6 +10,8 @@ class gps:
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
 
     def getcoordinates(self):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         self.arduino.write("GC" + "\n")
         s = self.arduino.readline()
         if s !="Recibido\n":
@@ -23,6 +25,8 @@ class gps:
         return (self.lat, self.long, self.quality)
 
     def getfix(self):
+        self.arduino.flushInput()
+        self.arduino.flushOutput()
         self.arduino.write("GF" + "\n")
         s = self.arduino.readline()
         if s !="Recibido\n":
