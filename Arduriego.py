@@ -130,6 +130,7 @@ def watering(plant):
         res = -1
         while res != 0:
             res = valves.openvalve(4)[0]
+
     res = -1
     while res != 0:
         res = valves.openvalve(plant+1)[0]
@@ -189,6 +190,7 @@ while 1:
         hum = -1
         while hum == -1:
             hum = conf.plants[plant_postpone].getHumidity()[0]
+            times.sleep(1)
         if hum < humiditythreshold:
             conf.plants[plant_postpone].watered()
             watering_postpone = False
@@ -224,6 +226,7 @@ while 1:
         hum = -1
         while hum == -1:
             hum = conf.plants[plant_to_water].getHumidity()[0]
+            times.sleep(1)
         writeLog("Humidity {}".format(hum))
         #perform watering actions
 
