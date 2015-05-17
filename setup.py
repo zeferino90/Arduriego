@@ -28,82 +28,82 @@ coordinates = ()
 
 if os.path.isfile("./setup.conf"):
     fileObject = open("setup.conf", "r")
-    cycles = pickle.load(fileObject)
-    sizes = pickle.load(fileObject)
+    #cycles = pickle.load(fileObject)
+    #sizes = pickle.load(fileObject)
     seasons = pickle.load(fileObject)
     thresholds = pickle.load(fileObject)
     plants = pickle.load(fileObject)
     coordinates = pickle.load(fileObject)
     fileObject.close()
 else:
-    cycles['shortcycle'] = timedelta(minutes=2)
-    cycles['mediumcycle'] = timedelta(minutes=3)
-    cycles['longcycle'] = timedelta(minutes=4)
-    sizes['small'] = 1
-    sizes['medium'] = 5
-    sizes['large'] = 20
+    # cycles['shortcycle'] = timedelta(minutes=2)
+    # cycles['mediumcycle'] = timedelta(minutes=3)
+    # cycles['longcycle'] = timedelta(minutes=4)
+    # sizes['small'] = 1
+    # sizes['medium'] = 5
+    # sizes['large'] = 20
     seasons['summer'] = [time(21), time(23, 50)]
     seasons['winter'] = [time(12), time(16)]
     thresholds['smallthreshold'] = 25
     thresholds['mediumthreshold'] = 15
     thresholds['largethreshold'] = 10
     coordinates = (41.22, 1.53)#por defecto la torre
-    plants.append(plant("margarita",cycles["shortcycle"], "small",timedelta(1),1, humiditySensor()))
-    plants.append(plant("cactus",cycles["mediumcycle"], "medium",timedelta(1),2, humiditySensor()))
-    plants.append(plant("magnolia",cycles["longcycle"], "large",timedelta(1),3, humiditySensor()))
+    plants.append(plant("margarita",timedelta(minutes=1), "small",timedelta(1),1, humiditySensor()))
+    plants.append(plant("cactus",timedelta(minutes=2), "medium",timedelta(1),2, humiditySensor()))
+    plants.append(plant("magnolia",timedelta(minutes=3), "large",timedelta(1),3, humiditySensor()))
 
 
 #EDITING, access to data
 command = raw_input("Please input your choice: ")
 while command != 'exit':
-    if command == "cycles" or command == "c":
-        #toca llegir de arxiu
-        print ("There are currently 3 watering cycles:")
-        print ("1: Short: " + str(cycles["shortcycle"]) + "\n") #toca afegir el que hem llegit del disc
-        print ("2: Medium: " + str(cycles["mediumcycle"]) + "\n")
-        print ("3: Long: " + str(cycles["longcycle"]) + "\n")
-        cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
-        while cycleid != '0':
-            newvalue = raw_input("Input its new value: Format DD HH MM\n")
-            if cycleid == '1':
-                cycles["shortcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
-            elif cycleid == '2':
-                cycles["mediumcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
-            elif cycleid == '3':
-                cycles["longcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
-            else:
-                print ("Incorrect Value\n")#check for it?
-            print("Current values:\n")
-            print ("1: Short: " + str(cycles["shortcycle"]) + "\n") #toca afegir el que hem llegit del disc
-            print ("2: Medium: " + str(cycles["mediumcycle"]) + "\n")
-            print ("3: Long: " + str(cycles["longcycle"]) + "\n")
-            cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
+    # if command == "cycles" or command == "c":
+    #     #toca llegir de arxiu
+    #     print ("There are currently 3 watering cycles:")
+    #     print ("1: Short: " + str(cycles["shortcycle"]) + "\n") #toca afegir el que hem llegit del disc
+    #     print ("2: Medium: " + str(cycles["mediumcycle"]) + "\n")
+    #     print ("3: Long: " + str(cycles["longcycle"]) + "\n")
+    #     cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
+    #     while cycleid != '0':
+    #         newvalue = raw_input("Input its new value: Format DD HH MM\n")
+    #         if cycleid == '1':
+    #             cycles["shortcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
+    #         elif cycleid == '2':
+    #             cycles["mediumcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
+    #         elif cycleid == '3':
+    #             cycles["longcycle"] = timedelta(days=int(newvalue.split(" ")[0]), hours=int(newvalue.split(" ")[1]), minutes=int(newvalue.split(" ")[2]))
+    #         else:
+    #             print ("Incorrect Value\n")#check for it?
+    #         print("Current values:\n")
+    #         print ("1: Short: " + str(cycles["shortcycle"]) + "\n") #toca afegir el que hem llegit del disc
+    #         print ("2: Medium: " + str(cycles["mediumcycle"]) + "\n")
+    #         print ("3: Long: " + str(cycles["longcycle"]) + "\n")
+    #         cycleid = raw_input("Input the number of the cycle you wish to change (0 for none): ")
+    #
+    #     print ("Check your watering privilege, gardenlord\n")
 
-        print ("Check your watering privilege, gardenlord\n")
+    # elif command == "potsize" or command == 'p':
+    #     print "All available pot sizes are as follows:\n"
+    #     print ("1: Small: " + str(sizes["small"]) + "\n")
+    #     print ("2: Medium: " + str(sizes["medium"]) + "\n")
+    #     print ("3: Large: " + str(sizes["large"]) + "\n")
+    #     potsizeid = raw_input("Input the number of the size you wish to change (0 for none): ")
+    #     if potsizeid != '0':
+    #         newvalue = int(raw_input("Input its new value: "))
+    #         if potsizeid == '1':
+    #             sizes["small"] = newvalue
+    #             print ("The value has been successfully changed\n")
+    #         elif potsizeid == '2':
+    #             sizes["medium"] = newvalue
+    #             print ("The value has been successfully changed\n")
+    #         elif potsizeid == '3':
+    #             sizes["large"] = newvalue
+    #             print ("The value has been successfully changed\n")
+    #         else:
+    #             print ("Incorrect Value\n")#check for it?
+    #
+    #     print ("The only true pot size is 420\n")
 
-    elif command == "potsize" or command == 'p':
-        print "All available pot sizes are as follows:\n"
-        print ("1: Small: " + str(sizes["small"]) + "\n")
-        print ("2: Medium: " + str(sizes["medium"]) + "\n")
-        print ("3: Large: " + str(sizes["large"]) + "\n")
-        potsizeid = raw_input("Input the number of the size you wish to change (0 for none): ")
-        if potsizeid != '0':
-            newvalue = int(raw_input("Input its new value: "))
-            if potsizeid == '1':
-                sizes["small"] = newvalue
-                print ("The value has been successfully changed\n")
-            elif potsizeid == '2':
-                sizes["medium"] = newvalue
-                print ("The value has been successfully changed\n")
-            elif potsizeid == '3':
-                sizes["large"] = newvalue
-                print ("The value has been successfully changed\n")
-            else:
-                print ("Incorrect Value\n")#check for it?
-
-        print ("The only true pot size is 420\n")
-
-    elif command == "season" or command == 's':
+    if command == "season" or command == 's':
         print ("Current seasonal watering schedules are:\n")
         #format = 12:10 13:03 (espai al mig)
         #llegir disc
