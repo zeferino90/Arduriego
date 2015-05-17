@@ -214,8 +214,8 @@ while command != 'exit':
 #Here we write the modified data back into the file
 #First, we gotta delete it though! Check how
 fileObject = open("setup.conf", "wb+")
-pickle.dump(cycles, fileObject)
-pickle.dump(sizes, fileObject)
+#pickle.dump(cycles, fileObject)
+#pickle.dump(sizes, fileObject)
 pickle.dump(seasons, fileObject)
 pickle.dump(thresholds, fileObject)
 pickle.dump(plants, fileObject)
