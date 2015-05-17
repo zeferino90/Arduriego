@@ -10,7 +10,7 @@ class Electrovalve:
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
 #'''/dev/tty.usbmodem621'''
 
-    def RepresentsInt(s):
+    def RepresentsInt(self, s):
         try:
             int(s)
             return True
