@@ -24,7 +24,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not sresult.is_integer():
+                if not RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
@@ -47,7 +47,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not sresult.is_integer():
+                if not RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
@@ -70,7 +70,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not sresult.is_integer():
+                if not RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
