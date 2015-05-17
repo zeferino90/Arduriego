@@ -10,8 +10,8 @@ __author__ = 'zeferino'
 
 print "Welcome to the setup program for RaspyRiego, the premier plant-watering application!\n"
 print "Your options are:\n"
-print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
-print "'potsize' or 'p', to check and modify the planter sizes\n"
+#print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
+#print "'potsize' or 'p', to check and modify the planter sizes\n"
 print "'season' or 's', to check and modify seasonal options\n"
 print "'thresh' or 't', to check and modify the current rain thresholds depends on size of plants\n"
 print "'plants' or 'pl, to check and modify the plants that you have'\n"
@@ -193,7 +193,8 @@ while command != 'exit':
                     print "Fail update. Try again"
 
     else:
-        print("Learn to type you neanderthal")
+        #print("Learn to type you neanderthal")
+        print("This is a invalid option")
 
     print "Your options are:\n"
     print "'cycles' or 'c', to receive a summary of, and modify, the available watering cycles currently under this system\n"
