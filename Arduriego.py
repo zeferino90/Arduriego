@@ -130,7 +130,7 @@ def watering(plant):
         res = -1
         while res != 0:
             res = valves.openvalve(4)[0]
-
+            times.sleep(1)
     res = -1
     while res != 0:
         res = valves.openvalve(plant+1)[0]
