@@ -51,6 +51,7 @@ def checkTimeToNextAction():
     global plant_postpone
     i = 0
     while i < len(conf.plants):
+        print "Next watering time plant {}: {}".format(i, conf.plants[i].nextWateringTime())
         auxDelta = conf.plants[i].nextWateringTime() - today
 
         if auxDelta < delta and not conf.plants[i].getPostpone():
