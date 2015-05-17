@@ -200,9 +200,6 @@ void serialEvent(){
 void loop(){
   GPS.parse(GPS.lastNMEA());
   if(!levelReady) {
-    Serial.print("DIFERENCIA DE TIEMPO ");
-    Serial.print(millis() - t);
-    Serial.print("\n");
     if(millis() - t > tempsnopreparat) levelReady = true;
   }
   
