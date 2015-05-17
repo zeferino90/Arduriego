@@ -63,6 +63,7 @@ def checkTimeToNextAction():
             rain_check = False
             watering_postpone = False
         auxDelta = (conf.plants[i].getWateringTime() + conf.plants[i].nextWateringTime()) - today
+        writeLog("        Postpone {}".format(conf.plants[i].getPostpone()))
         writeLog("        postpone AuxDelta{}: ".format(i) + str(auxDelta))
         if conf.plants[i].getPostpone() and auxDelta <= delta:
             plant_postpone = i
