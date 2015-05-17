@@ -30,12 +30,7 @@ deltatime = timedelta()
 #rain_check_time = datetime.combine(date.today(), time(23, 59))
 rain_check_time = datetime.today()
 
-def RepresentsInt(s):
-    try:
-        int(s)
-        return True
-    except ValueError:
-        return False
+
 
 def writeLog(log):
     f = open("logsArduriego.txt", "a")

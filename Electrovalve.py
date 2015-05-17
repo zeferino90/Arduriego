@@ -1,12 +1,22 @@
 import serial
 
 __author__ = 'zeferino'
+
+
 class Electrovalve:
     def __init__(self):
         self.value = 0
         self.quality = -1  # -1 valor invalido / 0 valor viejo / 1 valor bueno
         self.arduino = serial.Serial('/dev/ttyACM0', 115200, timeout= 1.0)
 #'''/dev/tty.usbmodem621'''
+
+    def RepresentsInt(s):
+        try:
+            int(s)
+            return True
+        except ValueError:
+            return False
+
     def getstate(self, addr):
         if addr < 1 or addr > 4:
             print "Invalid ddres \n"
@@ -24,7 +34,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not RepresentsInt(sresult):
+                if not self.RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
@@ -47,7 +57,7 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not RepresentsInt(sresult):
+                if not self.RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
@@ -70,8 +80,9 @@ class Electrovalve:
                 print "Valor de arduino {}".format(s)
                 sresult = s[0: len(s) - 1]
                 print "Valor tratado {}".format(sresult)
-                if not RepresentsInt(sresult):
+                if not self.RepresentsInt(sresult):
                     self.value = -1
                 else:
                     self.value = int(sresult)
         return self.value, self.quality
+
