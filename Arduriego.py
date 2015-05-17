@@ -89,31 +89,52 @@ def time_in_range(start, end, x):
     else:
         return start <= x or x <= end
 
-def stopwatering(plant):
+def stopwatering(plant, lev):
     writeLog("Thread start its function for plant {}".format(plant))
     times.sleep(10)
-
-    if level.getvalue()[0] > levelthreshold:
-        valves.openvalve(7)
+    if lev > levelthreshold:
+        res = -1
+        while res != 0:
+            res = valves.closevalve(4)[0]
     else:
-        valves.closevalve(7)
+        res = -1
+        while res != 0:
+            res = valves.openvalve(4)[0]
     times.sleep(10)
-    valves.closevalve(plant+4)
+    res = -1
+    while res != 0:
+        res = valves.closevalve(plant+1)[0]
+    res = -1
+    while res != 0:
+        res = valves.closevalve(4)[0]
     writeLog("Thread finish watering plant {}".format(plant))
     return
 
 def watering(plant):
     writeLog("Init watering function plant {}".format(plant))
-    writeLog("    Tank level {}".format(level.getvalue()[0]))
-    if level.getvalue()[0] > levelthreshold:
+    lev = -1
+    writeLog("    Getting tank level")
+    while lev == -1:
+        writeLog(".")
+        lev = level.getvalue()[0]
+        times.sleep(4)
+    writeLog("    Tank level {}".format(lev))
+
+    if lev > levelthreshold:
         writeLog("    Watering with tank water")
-        valves.openvalve(7)
+        res = -1
+        while res != 0:
+            res = valves.closevalve(4)[0]
     else:
         writeLog("    Watering without tank water")
-        valves.closevalve(7)
-    valves.openvalve(plant+4)
+        res = -1
+        while res != 0:
+            res = valves.openvalve(4)[0]
+    res = -1
+    while res != 0:
+        res = valves.openvalve(plant+1)[0]
     writeLog("    Starting watering thread")
-    thread.start_new_thread(stopwatering, (plant,))
+    thread.start_new_thread(stopwatering, (plant,lev))
 
 
 deltatime = checkTimeToNextAction()
@@ -165,7 +186,10 @@ while 1:
     elif watering_postpone:
         writeLog("Watering postpone action")
         #some plants have deferred watering actions
-        if conf.plants[plant_postpone].gethumidity()[0] < humiditythreshold:
+        hum = -1
+        while hum == -1:
+            hum = conf.plants[plant_postpone].getHumidity()[0]
+        if hum < humiditythreshold:
             conf.plants[plant_postpone].watered()
             watering_postpone = False
         else:
@@ -197,9 +221,14 @@ while 1:
 
     elif watering_action:
         writeLog("Watering action")
-        writeLog("Humidity {}".format(conf.plants[plant_to_water].getHumidity()))
+        hum = -1
+        while hum == -1:
+            hum = conf.plants[plant_to_water].getHumidity()[0]
+        writeLog("Humidity {}".format(hum))
         #perform watering actions
-        if conf.plants[plant_to_water].getHumidity()[0] < humiditythreshold:
+
+        writeLog("Humidity {}".format(hum))
+        if hum < humiditythreshold:
             writeLog("    Plant{} watered".format(plant_to_water))
             conf.plants[plant_to_water].watered()
             watering_action = False

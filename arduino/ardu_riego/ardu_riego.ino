@@ -1,4 +1,4 @@
-#include <TimerOne.h>
+//#include <TimerOne.h>
 #include <Adafruit_GPS.h>
 #include <SoftwareSerial.h>
 
@@ -18,7 +18,7 @@ const int valv2 =5;
 const int valv3 =6;
 const int valv4_5 =7; //este controla las dos electrovalvulas de aguacorriente/deposito
 boolean levelReady = true;
-const long tempsnopreparat = 300000000; //5 minuts que no es pot demanar
+const long tempsnopreparat = 60000; //1 minuts que no es pot demanar
 unsigned long t;
 long tempsUs;
 char c[5];
@@ -200,8 +200,12 @@ void serialEvent(){
 void loop(){
   GPS.parse(GPS.lastNMEA());
   if(!levelReady) {
-     if(millis() - t > tempsnopreparat) levelReady = true;
+    Serial.print("DIFERENCIA DE TIEMPO ");
+    Serial.print(millis() - t);
+    Serial.print("\n");
+    if(millis() - t > tempsnopreparat) levelReady = true;
   }
+  
    //Si está disponible
    
 //      if(stringComplete){
@@ -270,7 +274,7 @@ void loop(){
      }
      else if (c[0] == 'E' and stringComplete) { //Si es una 'E', obrir o tancar una electrovalvula
        c[0] = '0';
-       Serial.print("RecibidoVALVE\n");
+       Serial.print("Recibido\n");
        if (c[1] == 'O') {
          Serial.print(obrirElectrovalvula(c[2]));
          Serial.print("\n");

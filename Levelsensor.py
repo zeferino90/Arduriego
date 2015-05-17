@@ -12,6 +12,7 @@ class Levelsensor:
         s = self.arduino.readline()
         if s !="Recibido\n":
             self.quality = self.quality if self.quality != 1 else 0
+            self.value = -1
         else:
             s = self.arduino.readline()
             sresult=s[0: len(s) - 1]
